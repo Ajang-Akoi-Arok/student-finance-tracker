@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Editors
+*.swp
+*.swo
+.vscode/settings.json
+.idea/
+
+# Node (if ever added)
+node_modules/

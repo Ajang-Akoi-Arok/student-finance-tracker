@@ -1,0 +1,137 @@
+[
+  {
+    "id": "txn_1758758400000_A1F2B",
+    "description": "Lunch at cafeteria",
+    "amount": 12.50,
+    "category": "Food",
+    "date": "2025-09-25",
+    "createdAt": "2025-09-25T12:30:00Z",
+    "updatedAt": "2025-09-25T12:30:00Z"
+  },
+  {
+    "id": "txn_1758585600000_B3C4D",
+    "description": "Chemistry textbook",
+    "amount": 89.99,
+    "category": "Books",
+    "date": "2025-09-23",
+    "createdAt": "2025-09-23T14:15:00Z",
+    "updatedAt": "2025-09-23T14:15:00Z"
+  },
+  {
+    "id": "txn_1758326400000_C5E6F",
+    "description": "Bus pass monthly",
+    "amount": 45.00,
+    "category": "Transport",
+    "date": "2025-09-20",
+    "createdAt": "2025-09-20T09:00:00Z",
+    "updatedAt": "2025-09-20T09:00:00Z"
+  },
+  {
+    "id": "txn_1759017600000_D7G8H",
+    "description": "Coffee with friends",
+    "amount": 8.75,
+    "category": "Entertainment",
+    "date": "2025-09-28",
+    "createdAt": "2025-09-28T16:45:00Z",
+    "updatedAt": "2025-09-28T16:45:00Z"
+  },
+  {
+    "id": "txn_1758240000000_E9I0J",
+    "description": "Library late fee",
+    "amount": 2.50,
+    "category": "Fees",
+    "date": "2025-09-19",
+    "createdAt": "2025-09-19T11:30:00Z",
+    "updatedAt": "2025-09-19T11:30:00Z"
+  },
+  {
+    "id": "txn_1758844800000_F1K2L",
+    "description": "Groceries from market",
+    "amount": 35.99,
+    "category": "Food",
+    "date": "2025-09-26",
+    "createdAt": "2025-09-26T18:20:00Z",
+    "updatedAt": "2025-09-26T18:20:00Z"
+  },
+  {
+    "id": "txn_1758931200000_G3M4N",
+    "description": "Movie ticket weekend",
+    "amount": 15.99,
+    "category": "Entertainment",
+    "date": "2025-09-27",
+    "createdAt": "2025-09-27T19:00:00Z",
+    "updatedAt": "2025-09-27T19:00:00Z"
+  },
+  {
+    "id": "txn_1758672000000_H5O6P",
+    "description": "Parking on campus",
+    "amount": 5.00,
+    "category": "Transport",
+    "date": "2025-09-24",
+    "createdAt": "2025-09-24T10:15:00Z",
+    "updatedAt": "2025-09-24T10:15:00Z"
+  },
+  {
+    "id": "txn_1758499200000_I7Q8R",
+    "description": "Physics problem set book",
+    "amount": 42.50,
+    "category": "Books",
+    "date": "2025-09-22",
+    "createdAt": "2025-09-22T13:45:00Z",
+    "updatedAt": "2025-09-22T13:45:00Z"
+  },
+  {
+    "id": "txn_1756684800000_J9S0T",
+    "description": "Tuition deposit",
+    "amount": 500.00,
+    "category": "Fees",
+    "date": "2025-09-01",
+    "createdAt": "2025-09-01T08:00:00Z",
+    "updatedAt": "2025-09-01T08:00:00Z"
+  },
+  {
+    "id": "txn_1759104000000_K1U2V",
+    "description": "Tea at campus cafe",
+    "amount": 6.50,
+    "category": "Food",
+    "date": "2025-09-29",
+    "createdAt": "2025-09-29T10:00:00Z",
+    "updatedAt": "2025-09-29T10:00:00Z"
+  },
+  {
+    "id": "txn_1758153600000_L3W4X",
+    "description": "Bike repair service",
+    "amount": 28.99,
+    "category": "Transport",
+    "date": "2025-09-18",
+    "createdAt": "2025-09-18T15:30:00Z",
+    "updatedAt": "2025-09-18T15:30:00Z"
+  },
+  {
+    "id": "txn_1767139200000_M5Y6Z",
+    "description": "School supplies pack",
+    "amount": 19.99,
+    "category": "Other",
+    "date": "2025-12-31",
+    "createdAt": "2025-12-31T12:00:00Z",
+    "updatedAt": "2025-12-31T12:00:00Z"
+  },
+  {
+    "id": "txn_1735689600000_N7A8B",
+    "description": "Concert tickets",
+    "amount": 75.00,
+    "category": "Entertainment",
+    "date": "2025-01-01",
+    "createdAt": "2025-01-01T20:30:00Z",
+    "updatedAt": "2025-01-01T20:30:00Z"
+  },
+  {
+    "id": "txn_1757894400000_O9C0D",
+    "description": "Organic meal delivery",
+    "amount": 0.99,
+    "category": "Food",
+    "date": "2025-09-15",
+    "createdAt": "2025-09-15T17:45:00Z",
+    "updatedAt": "2025-09-15T17:45:00Z"
+  }
+]
