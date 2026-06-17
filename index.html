@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Finance Tracker</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%232563eb'/><text x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='system-ui,sans-serif' font-weight='700' font-size='20' fill='white'>F</text></svg>">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/a11y.css">
+    <script>
+        (function () {
+            var t = localStorage.getItem('ft-theme');
+            if (t) document.documentElement.setAttribute('data-theme', t);
+        }());
+    </script>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header class="app-header" role="banner">
+        <div class="header-container">
+            <h1 class="logo">Finance Tracker</h1>
+            <nav class="app-nav" id="app-nav" aria-label="Main navigation">
+                <ul class="nav-list">
+                    <li><a href="#about-section"     class="nav-link" data-section="about">About</a></li>
+                    <li><a href="#dashboard-section" class="nav-link" data-section="dashboard">Dashboard</a></li>
+                    <li><a href="#records-section"   class="nav-link" data-section="records">Records</a></li>
+                    <li><a href="#add-section"       class="nav-link" data-section="add">Add Record</a></li>
+                    <li><a href="#settings-section"  class="nav-link" data-section="settings">Settings</a></li>
+                </ul>
+            </nav>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Switch to dark mode"><span class="theme-icon" aria-hidden="true">🌙</span><span class="theme-label">Dark</span></button>
+            <button class="nav-toggle" id="nav-toggle"
+                    aria-label="Toggle navigation menu" aria-expanded="false">
+                <span class="hamburger"></span>
+            </button>
+        </div>
+    </header>
+
+    <main id="main-content" class="app-main">
+
+        <!-- About Section (default landing page) -->
+        <section id="about-section" class="section" aria-labelledby="about-heading">
+
+                <!-- Hero banner inside About -->
+                <div class="about-hero" role="region" aria-label="About" aria-labelledby="about-heading">
+                    <div class="about-hero-inner">
+                        <h2 id="about-heading" class="home-title">
+                            <span class="word-anim" style="--wi:0">Smart</span>
+                            <span class="word-anim" style="--wi:1">Budgeting</span><br>
+                            <span class="word-anim home-title-accent" style="--wi:2">for</span>
+                            <span class="word-anim home-title-accent" style="--wi:3">Students</span>
+                        </h2>
+                        <p class="home-tagline">Track every expense, set a monthly budget cap, and see exactly where your money goes. All inside the browser. No sign-up, no server.</p>
+                        <div class="home-cta-row">
+                            <button class="btn home-cta-btn home-cta-primary" data-goto="dashboard">Open Dashboard &rarr;</button>
+                            <button class="btn home-cta-btn home-cta-outline" data-goto="records">View Records</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About content -->
+                <div class="about-cards">
+
+                    <div class="about-card" data-aos>
+                        <h3 class="about-card-title">About This Project</h3>
+                        <p>Managing personal finances is an important skill for every student. Many students struggle to keep track of their daily expenses, which can lead to overspending and financial stress. The <strong>Student Finance Tracker</strong> was developed to provide a simple and effective solution that helps students monitor their spending habits, organize financial records, and make informed decisions about their money.</p>
+                        <p>This application allows users to record transactions, categorize expenses, set spending limits, and analyze financial trends over time. By maintaining accurate financial records, students can better understand where their money is going and identify areas where they can reduce unnecessary expenses.</p>
+                        <p>The app is designed with usability, accessibility, and responsiveness in mind. Whether accessed on a mobile phone, tablet, or desktop, it provides a consistent and user-friendly experience. It runs entirely in the browser with no account, no server, and no internet connection required after the first load.</p>
+                    </div>
+
+                    <div class="about-card" data-aos>
+                        <h3 class="about-card-title">Key Features</h3>
+                        <p class="about-card-sub">Everything you need to stay on top of your spending</p>
+                        <ul class="home-feature-list">
+                            <li><strong>Spending Dashboard</strong>:Real-time total, top category, 7-day trend chart, and budget tracker at a glance.</li>
+                            <li><strong>5-Rule Regex Validation</strong>:Every input guarded by regex, including a back-reference rule that catches duplicate words.</li>
+                            <li><strong>Live Regex Search</strong>:Filter any field with full regex support. Matches highlight instantly; bad patterns show clear feedback.</li>
+                            <li><strong>Multi-Currency</strong>:Work in USD, RWF, or UGX with configurable exchange rates, switchable anytime in Settings.</li>
+                            <li><strong>Auto-Save &amp; Export</strong>:Changes save to localStorage instantly. Export as JSON or import from a backup anytime.</li>
+                            <li><strong>Fully Accessible</strong>:Semantic HTML, ARIA live regions, keyboard shortcuts, skip link, and 4.5:1 colour contrast.</li>
+                        </ul>
+                    </div>
+
+                    <div class="about-card" data-aos>
+                        <h3 class="about-card-title">Dashboard Overview</h3>
+                        <p>The Dashboard serves as the central hub of the Student Finance Tracker. It provides a comprehensive summary of financial activities including total records, total spending, top category, and a 7-day trend chart. Users can also set a monthly budget cap and the system will alert them when spending exceeds the limit.</p>
+                    </div>
+
+                    <div class="about-card" data-aos>
+                        <h3 class="about-card-title">Financial Records &amp; Expense Management</h3>
+                        <p>The Records section allows users to create, view, edit, and manage all transaction data. Every record contains a description, amount, category, and date, each assigned a unique ID with created/updated timestamps. Advanced regex search provides instant visual highlighting of matched results.</p>
+                    </div>
+
+                    <div class="about-card" data-aos>
+                        <h3 class="about-card-title">How to Get Started</h3>
+                        <ol class="home-steps-list">
+                            <li><strong>Open the Dashboard</strong>:Click &ldquo;Open Dashboard&rdquo; above. Sample transactions load automatically on your first visit.</li>
+                            <li><strong>Add a transaction</strong>:Go to Add Record, fill in the description, amount, category, and date, then save.</li>
+                            <li><strong>Set a budget cap</strong>:Go to Settings and enter a monthly spending limit.</li>
+                            <li><strong>Search and filter</strong>:Switch to Records and type any keyword or regex pattern into the search box.</li>
+                            <li><strong>Export your data</strong>:Use the Export button on the dashboard to download a JSON backup.</li>
+                        </ol>
+                    </div>
+
+
+                </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="section" aria-labelledby="dashboard-heading">
+            <div class="section-container">
+
+                <div class="dashboard-header">
+                    <div class="dashboard-header-text">
+                        <p class="dashboard-eyebrow">Finance Overview</p>
+                        <h2 id="dashboard-heading" class="section-title">Spending Dashboard</h2>
+                        <p class="dashboard-subtitle">Your complete financial snapshot</p>
+                    </div>
+                    <div class="dashboard-header-actions">
+                        <button id="btn-import"     class="btn btn-secondary btn-sm" aria-label="Import transactions from JSON file">&#8593; Import</button>
+                        <button id="btn-export"     class="btn btn-secondary btn-sm" aria-label="Export transactions as JSON">&#8595; JSON</button>
+                        <button id="btn-export-csv" class="btn btn-secondary btn-sm" aria-label="Export transactions as CSV">&#8595; CSV</button>
+                        <button id="btn-add-record" class="btn btn-primary" aria-label="Add new transaction">+ Add Transaction</button>
+                    </div>
+                </div>
+
+                <div id="status-region" role="status" aria-live="polite"   aria-atomic="true" class="sr-only"></div>
+                <div id="alert-region"  role="alert"  aria-live="assertive" aria-atomic="true" class="sr-only"></div>
+
+                <div id="budget-banner" class="budget-banner hidden"
+                     aria-live="polite" aria-atomic="true" role="status"></div>
+
+                <div class="stats-grid">
+                    <article class="stat-card" data-stat="spending" aria-label="Total spent">
+                        <h3>Total Spent</h3>
+                        <p class="stat-value" id="stat-total">$0.00</p>
+                        <p class="stat-label">across all transactions</p>
+                    </article>
+                    <article class="stat-card" data-stat="category" aria-label="Top spending category">
+                        <h3>Top Category</h3>
+                        <p class="stat-value" id="stat-category">N/A</p>
+                        <p class="stat-label" id="stat-category-amount">highest spending area</p>
+                    </article>
+                    <article class="stat-card" data-stat="count" aria-label="Transaction count">
+                        <h3>Transactions</h3>
+                        <p class="stat-value" id="stat-count">0</p>
+                        <p class="stat-label">total records logged</p>
+                    </article>
+                    <article class="stat-card" data-stat="budget" id="budget-stat-card" aria-label="Budget cap status">
+                        <h3>Budget Cap</h3>
+                        <p class="stat-value" id="stat-cap-remaining">No limit</p>
+                        <p class="stat-label" id="stat-cap-label">set in Settings</p>
+                        <p class="stat-spent" id="stat-cap-spent" hidden></p>
+                    </article>
+                </div>
+
+                <figure class="chart-container" aria-labelledby="chart-title">
+                    <figcaption class="chart-header">
+                        <div class="chart-header-text">
+                            <h3 id="chart-title">7-Day Spending Trend</h3>
+                            <p class="chart-subtitle">Daily totals for the past week</p>
+                        </div>
+                        <span class="chart-badge" aria-hidden="true">Last 7 days</span>
+                    </figcaption>
+                    <div class="chart" id="trend-chart" role="img" aria-label="7-day spending trend bar chart"></div>
+                    <table class="sr-only" id="trend-chart-table" aria-label="7-day spending data">
+                        <caption>Daily spending totals for the last 7 days</caption>
+                        <thead><tr><th scope="col">Day</th><th scope="col">Date</th><th scope="col">Amount</th></tr></thead>
+                        <tbody id="trend-chart-table-body"></tbody>
+                    </table>
+                </figure>
+
+            </div>
+        </section>
+
+        <!-- =========================================
+             Records Section
+             ========================================= -->
+        <section id="records-section" class="section hidden" aria-labelledby="records-heading">
+            <div class="section-container">
+                <h2 id="records-heading" class="section-title">Transactions</h2>
+
+                <div class="search-sort-bar">
+                    <div class="search-box">
+                        <label for="search-input" class="search-label">Search transactions (regex):</label>
+                        <input type="text" id="search-input" class="search-input"
+                            placeholder="e.g., coffee|tea, \.99, \b(\w+)\s+\1\b"
+                            aria-describedby="search-hint search-status"
+                            autocomplete="off" spellcheck="false">
+                        <small id="search-hint">Enter a regex pattern or plain text to search description, category, amount, and date.</small>
+                        <div id="search-status" role="status" aria-live="polite" class="search-status-msg"></div>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="search-case-insensitive" checked>
+                            <span>Case-insensitive</span>
+                        </label>
+                    </div>
+                    <div class="sort-controls">
+                        <label for="sort-field">Sort by:</label>
+                        <select id="sort-field" aria-label="Sort records by field">
+                            <option value="date">Date</option>
+                            <option value="description">Description (A–Z)</option>
+                            <option value="amount">Amount</option>
+                        </select>
+                        <button id="sort-direction" class="btn btn-sm"
+                                aria-label="Toggle sort direction (currently descending)">
+                            ↓ Desc
+                        </button>
+                    </div>
+                </div>
+
+                <div id="empty-state" class="empty-state" hidden>
+                    <p>No transactions yet.
+                        <button type="button" id="empty-add-btn" class="btn-link">Add your first one!</button>
+                    </p>
+                </div>
+
+                <div class="table-wrapper" id="table-wrapper">
+                    <table id="records-table" class="records-table" aria-label="Transaction records">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Category</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="records-tbody"></tbody>
+                    </table>
+                </div>
+
+                <ul id="records-cards" class="records-cards" aria-label="Transaction cards"></ul>
+            </div>
+        </section>
+
+        <!-- =========================================
+             Add Section
+             ========================================= -->
+        <section id="add-section" class="section hidden" aria-labelledby="add-heading">
+            <div class="section-container">
+                <div class="add-section-header">
+                    <p class="dashboard-eyebrow">Transaction Management</p>
+                    <h2 id="add-heading" class="section-title">Add Record</h2>
+                    <p class="dashboard-subtitle">Create a new record or edit an existing one</p>
+                </div>
+                <div class="add-section-body">
+                    <form id="inline-transaction-form" class="inline-transaction-form" novalidate>
+                        <input type="hidden" id="inline-record-id">
+                        <div id="inline-record-meta" class="form-record-meta" hidden>
+                            <p class="meta-line"><strong>ID:</strong> <code id="inline-meta-id"></code></p>
+                            <p class="meta-line"><strong>Created:</strong> <span id="inline-meta-created"></span></p>
+                            <p class="meta-line"><strong>Last updated:</strong> <span id="inline-meta-updated"></span></p>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="inline-description">Description <span aria-hidden="true">*</span></label>
+                                <input type="text" id="inline-description" class="form-input"
+                                    placeholder="e.g., Lunch at cafeteria"
+                                    aria-describedby="inline-error-description inline-desc-hint"
+                                    aria-required="true" autocomplete="off">
+                                <small id="inline-desc-hint" class="field-hint">No leading/trailing spaces. No duplicate words.</small>
+                                <span id="inline-error-description" class="error-message" role="alert" aria-live="polite"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="inline-amount">Amount <span aria-hidden="true">*</span></label>
+                                <input type="text" id="inline-amount" class="form-input"
+                                    inputmode="decimal" placeholder="e.g., 12.50"
+                                    aria-describedby="inline-error-amount inline-amount-hint"
+                                    aria-required="true" autocomplete="off">
+                                <small id="inline-amount-hint" class="field-hint">Positive number, max 2 decimal places</small>
+                                <span id="inline-error-amount" class="error-message" role="alert" aria-live="polite"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="inline-category">Category <span aria-hidden="true">*</span></label>
+                                <select id="inline-category" aria-describedby="inline-error-category" aria-required="true">
+                                    <option value="">Select a category</option>
+                                </select>
+                                <span id="inline-error-category" class="error-message" role="alert" aria-live="polite"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="inline-date">Date <span aria-hidden="true">*</span></label>
+                                <input type="date" id="inline-date" class="form-input"
+                                    aria-describedby="inline-error-date" aria-required="true">
+                                <span id="inline-error-date" class="error-message" role="alert" aria-live="polite"></span>
+                            </div>
+                        </div>
+                        <div class="form-actions inline-form-actions">
+                            <button type="submit" class="btn btn-primary" id="inline-submit-btn">Save Transaction</button>
+                            <button type="button" class="btn btn-secondary" id="inline-reset-btn">Reset Form</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================
+             Settings Section
+             ========================================= -->
+        <section id="settings-section" class="section hidden" aria-labelledby="settings-heading">
+            <div class="section-container">
+                <h2 id="settings-heading" class="section-title">Settings</h2>
+
+                <div class="settings-group">
+                    <h3>Currency Settings</h3>
+                    <div class="form-group">
+                        <label for="base-currency">Base Currency:</label>
+                        <select id="base-currency" aria-label="Select base currency">
+                            <option value="USD">USD ($)</option>
+                            <option value="RWF">RWF (RF)</option>
+                            <option value="UGX">UGX (USh)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="display-currency">Display Currency:</label>
+                        <select id="display-currency" aria-label="Select display currency for conversion">
+                            <option value="USD">USD ($)</option>
+                            <option value="RWF">RWF (RF)</option>
+                            <option value="UGX">UGX (USh)</option>
+                        </select>
+                    </div>
+                    <div class="exchange-rates">
+                        <h4>Exchange Rates (vs USD)</h4>
+                        <div class="form-group">
+                            <label for="rate-rwf">1 USD = ? RWF</label>
+                            <input type="number" id="rate-rwf" step="1" value="1300"
+                                   aria-label="Exchange rate USD to RWF" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="rate-ugx">1 USD = ? UGX</label>
+                            <input type="number" id="rate-ugx" step="1" value="3700"
+                                   aria-label="Exchange rate USD to UGX" min="1">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3>Categories</h3>
+                    <ul id="categories-list" class="categories-list" aria-label="Current categories"></ul>
+                    <div class="form-group">
+                        <label for="new-category">Add New Category:</label>
+                        <div class="input-group">
+                            <input type="text" id="new-category" placeholder="e.g., Shopping"
+                                aria-describedby="category-hint">
+                            <small id="category-hint">Letters, spaces, and hyphens only</small>
+                            <button id="btn-add-category" class="btn btn-secondary">Add Category</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3>Budget Cap</h3>
+                    <div class="form-group">
+                        <label for="budget-cap">Monthly Limit (USD):</label>
+                        <input type="number" id="budget-cap" step="0.01" min="0"
+                            placeholder="Leave blank for no limit" aria-describedby="cap-hint">
+                        <small id="cap-hint">Set a monthly spending cap to track your budget</small>
+                    </div>
+                    <button id="btn-save-cap" class="btn btn-primary">Save Cap</button>
+                </div>
+
+                <div class="settings-group">
+                    <h3>Data Management</h3>
+                    <div class="data-actions">
+                        <button id="btn-clear-data" class="btn btn-danger"
+                                aria-label="Clear all data and reset application">
+                            Clear All Data
+                        </button>
+                        <button id="btn-keyboard-map" class="btn btn-secondary"
+                                aria-label="Show keyboard navigation map">
+                            Keyboard Map
+                        </button>
+                    </div>  
+                </div>
+            </div>
+        </section>
+
+        <!-- About section is above -->
+
+    </main>
+
+    <!-- Add/Edit Form Modal (used from Dashboard + Records edit buttons) -->
+    <dialog id="form-modal" class="modal" aria-labelledby="form-modal-title" aria-modal="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="form-modal-title">Add Transaction</h3>
+                <button class="btn-close" id="btn-close-modal" aria-label="Close form">&times;</button>
+            </div>
+            <form id="transaction-form" class="transaction-form" novalidate>
+                <input type="hidden" id="form-record-id">
+                <div id="form-record-meta" class="form-record-meta" hidden>
+                    <p class="meta-line"><strong>ID:</strong> <code id="meta-id"></code></p>
+                    <p class="meta-line"><strong>Created:</strong> <span id="meta-created"></span></p>
+                    <p class="meta-line"><strong>Last updated:</strong> <span id="meta-updated"></span></p>
+                </div>
+                <div class="form-group">
+                    <label for="form-description">Description <span aria-hidden="true">*</span></label>
+                    <input type="text" id="form-description" class="form-input"
+                        placeholder="e.g., Lunch at cafeteria"
+                        aria-describedby="error-description desc-hint"
+                        aria-required="true" autocomplete="off">
+                    <small id="desc-hint" class="field-hint">No leading/trailing spaces. Duplicate words not allowed.</small>
+                    <span id="error-description" class="error-message" role="alert" aria-live="polite"></span>
+                </div>
+                <div class="form-group">
+                    <label for="form-amount">Amount <span aria-hidden="true">*</span></label>
+                    <input type="text" id="form-amount" class="form-input"
+                        inputmode="decimal" placeholder="e.g., 12.50"
+                        aria-describedby="error-amount amount-hint"
+                        aria-required="true" autocomplete="off">
+                    <small id="amount-hint" class="field-hint">Positive number, max 2 decimal places (e.g., 12.50)</small>
+                    <span id="error-amount" class="error-message" role="alert" aria-live="polite"></span>
+                </div>
+                <div class="form-group">
+                    <label for="form-category">Category <span aria-hidden="true">*</span></label>
+                    <select id="form-category" aria-describedby="error-category" aria-required="true">
+                        <option value="">Select a category</option>
+                    </select>
+                    <span id="error-category" class="error-message" role="alert" aria-live="polite"></span>
+                </div>
+                <div class="form-group">
+                    <label for="form-date">Date <span aria-hidden="true">*</span></label>
+                    <input type="date" id="form-date" class="form-input"
+                        aria-describedby="error-date" aria-required="true">
+                    <span id="error-date" class="error-message" role="alert" aria-live="polite"></span>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save Transaction</button>
+                    <button type="button" class="btn btn-secondary" id="btn-cancel-form">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+    <!-- Keyboard Map Modal -->
+    <dialog id="keyboard-modal" class="modal" aria-labelledby="keyboard-modal-title" aria-modal="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="keyboard-modal-title">Keyboard Navigation</h3>
+                <button class="btn-close" id="btn-close-keyboard" aria-label="Close keyboard map">&times;</button>
+            </div>
+            <div class="modal-body">
+                <table class="keyboard-table">
+                    <thead><tr><th scope="col">Keys</th><th scope="col">Action</th></tr></thead>
+                    <tbody>
+                        <tr><td><kbd>Tab</kbd></td><td>Move focus forward</td></tr>
+                        <tr><td><kbd>Shift</kbd> + <kbd>Tab</kbd></td><td>Move focus backward</td></tr>
+                        <tr><td><kbd>Enter</kbd> / <kbd>Space</kbd></td><td>Activate button or submit form</td></tr>
+                        <tr><td><kbd>Escape</kbd></td><td>Close modal or cancel edit</td></tr>
+                        <tr><td><kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>S</kbd></td><td>Manual save confirmation</td></tr>
+                        <tr><td><kbd>Alt</kbd> + <kbd>K</kbd></td><td>Open keyboard map</td></tr>
+                        <tr><td><kbd>Alt</kbd> + <kbd>N</kbd></td><td>New transaction</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Delete Confirmation Modal -->
+    <dialog id="delete-modal" class="modal" aria-labelledby="delete-modal-title" aria-modal="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="delete-modal-title">Confirm Delete</h3>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this transaction? This action cannot be undone.</p>
+                <div class="form-actions">
+                    <button id="btn-confirm-delete" class="btn btn-danger">Delete</button>
+                    <button id="btn-cancel-delete"  class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Clear-All-Data Confirmation Modal -->
+    <dialog id="clear-modal" class="modal" aria-labelledby="clear-modal-title" aria-modal="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="clear-modal-title">Clear All Data</h3>
+            </div>
+            <div class="modal-body">
+                <p>This will <strong>permanently delete all transactions</strong> and reset the app. This cannot be undone.</p>
+                <div class="form-actions">
+                    <button id="btn-confirm-clear" class="btn btn-danger">Yes, Clear Everything</button>
+                    <button id="btn-cancel-clear"  class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </dialog>
+
+    <div id="toast-container" aria-live="polite" aria-atomic="false" class="toast-container"></div>
+
+    <section class="contact-strip hidden" aria-label="Contact">
+        <h2 class="contact-strip__heading">Contact</h2>
+        <address class="contact-strip__body">
+            <span class="contact-strip__item"><span class="contact-strip__label">Email</span><a href="mailto:a.biar1@alustudent.com">a.biar1@alustudent.com</a></span>
+            <span class="contact-strip__item"><span class="contact-strip__label">GitHub</span><a href="https://github.com/Ajang-Akoi-Arok" target="_blank" rel="noopener noreferrer">Ajang-Akoi-Arok</a></span>
+        </address>
+    </section>
+
+    <footer class="app-footer" role="contentinfo">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4 class="footer-col-heading">Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="#about-section"     class="nav-link" data-section="about">About</a></li>
+                    <li><a href="#dashboard-section" class="nav-link" data-section="dashboard">Dashboard</a></li>
+                    <li><a href="#records-section"   class="nav-link" data-section="records">Records</a></li>
+                    <li><a href="#add-section"       class="nav-link" data-section="add">Add Record</a></li>
+                    <li><a href="#settings-section"  class="nav-link" data-section="settings">Settings</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-col-heading">Tools</h4>
+                <ul class="footer-links">
+                    <li><a href="#" id="footer-keyboard-link">Keyboard Map</a></li>
+                    <li><a href="tests.html">Run Tests</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="scripts/main.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .catch(err => console.warn('SW registration failed:', err));
+            });
+        }
+    </script>
+</body>
+</html>
+

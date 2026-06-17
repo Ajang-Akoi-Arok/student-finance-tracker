@@ -1,0 +1,182 @@
+/* ========================================
+   Accessibility Styles
+   Focus · High Contrast · Reduced Motion
+   ======================================== */
+
+/* ========================================
+   Enhanced Focus Indicators
+   (main.css uses box-shadow; this adds
+   outline fallback for forced-colors mode)
+   ======================================== */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid var(--blue-600);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   High Contrast Mode (prefers-contrast)
+   ======================================== */
+
+@media (prefers-contrast: more) {
+    :root {
+        --blue-600: #0000ee;
+        --gray-800: #000;
+        --gray-300: #000;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+        outline-width: 4px;
+        outline-color: ButtonText;
+    }
+
+    .cat-badge {
+        border: 2px solid currentColor;
+    }
+}
+
+/* ========================================
+   Forced Colors (Windows High Contrast)
+   ======================================== */
+
+@media (forced-colors: active) {
+    .btn-primary, .btn-danger {
+        forced-color-adjust: none;
+    }
+
+    .stat-card {
+        border: 2px solid ButtonText;
+    }
+}
+
+/* ========================================
+   Reduced Motion
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ========================================
+   Dark Mode
+   System preference (auto) AND manual toggle
+   ======================================== */
+
+/* Auto dark — system preference */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --white:    #0f172a;
+        --gray-50:  #1e293b;
+        --gray-100: #1e293b;
+        --gray-200: #334155;
+        --gray-300: #475569;
+        --gray-400: #64748b;
+        --gray-500: #94a3b8;
+        --gray-600: #cbd5e1;
+        --gray-700: #e2e8f0;
+        --gray-800: #f1f5f9;
+        --gray-900: #f8fafc;
+    }
+    body { background-color: #0f172a; }
+    .app-header { background: #1e293b; border-color: #334155; }
+    .app-nav    { background: #1e293b; border-color: #334155; }
+    .section-container { background: #1e293b; border-color: #334155; }
+    .about-card { background: #1e293b; border-color: #334155; }
+    .records-table thead tr { background: #334155; }
+    .records-table td       { border-color: #334155; }
+    .records-table tbody tr:hover { background: rgba(37,99,235,.1); }
+    mark { background-color: #854d0e; color: #fef08a; }
+    .cat-badge[data-category="Food"]          { background: rgba(234,88,12,.2); }
+    .cat-badge[data-category="Books"]         { background: rgba(37,99,235,.2); }
+    .cat-badge[data-category="Transport"]     { background: rgba(5,150,105,.2); }
+    .cat-badge[data-category="Entertainment"] { background: rgba(124,58,237,.2); }
+    .cat-badge[data-category="Fees"]          { background: rgba(220,38,38,.2); }
+    .cat-badge[data-category="Other"]         { background: rgba(71,85,105,.2); }
+}
+
+/* Manual dark — user clicked the toggle */
+html[data-theme="dark"] {
+    --white:    #0f172a;
+    --gray-50:  #1e293b;
+    --gray-100: #1e293b;
+    --gray-200: #334155;
+    --gray-300: #475569;
+    --gray-400: #64748b;
+    --gray-500: #94a3b8;
+    --gray-600: #cbd5e1;
+    --gray-700: #e2e8f0;
+    --gray-800: #f1f5f9;
+    --gray-900: #f8fafc;
+}
+html[data-theme="dark"] body { background-color: #0f172a; }
+html[data-theme="dark"] .app-header { background: #1e293b; border-color: #334155; }
+html[data-theme="dark"] .app-nav    { background: #1e293b; border-color: #334155; }
+html[data-theme="dark"] .section-container { background: #1e293b; border-color: #334155; }
+html[data-theme="dark"] .about-card { background: #1e293b; border-color: #334155; }
+html[data-theme="dark"] .records-table thead tr { background: #334155; }
+html[data-theme="dark"] .records-table td       { border-color: #334155; }
+html[data-theme="dark"] .records-table tbody tr:hover { background: rgba(37,99,235,.1); }
+html[data-theme="dark"] mark { background-color: #854d0e; color: #fef08a; }
+html[data-theme="dark"] .cat-badge[data-category="Food"]          { background: rgba(234,88,12,.2); }
+html[data-theme="dark"] .cat-badge[data-category="Books"]         { background: rgba(37,99,235,.2); }
+html[data-theme="dark"] .cat-badge[data-category="Transport"]     { background: rgba(5,150,105,.2); }
+html[data-theme="dark"] .cat-badge[data-category="Entertainment"] { background: rgba(124,58,237,.2); }
+html[data-theme="dark"] .cat-badge[data-category="Fees"]          { background: rgba(220,38,38,.2); }
+html[data-theme="dark"] .cat-badge[data-category="Other"]         { background: rgba(71,85,105,.2); }
+
+/* Manual light — force light even when OS is dark */
+html[data-theme="light"] {
+    --white:    #ffffff;
+    --gray-50:  #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-400: #94a3b8;
+    --gray-500: #64748b;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --gray-900: #0f172a;
+}
+html[data-theme="light"] body           { background-color: #f1f5f9; }
+html[data-theme="light"] .app-header    { background: #ffffff; border-color: #e2e8f0; }
+html[data-theme="light"] .app-nav       { background: #ffffff; border-color: #e2e8f0; }
+html[data-theme="light"] .section-container { background: #ffffff; border-color: #e2e8f0; }
+html[data-theme="light"] .records-table thead tr { background: #f8fafc; }
+html[data-theme="light"] .records-table td       { border-color: #e2e8f0; }
+html[data-theme="light"] mark           { background-color: #fef08a; color: #713f12; }
+
+/* ========================================
+   Color Contrast Reference
+   body #1e293b on #f8fafc  = 13.7:1  ✓
+   link #2563eb on white    =  4.8:1  ✓
+   btn white on #2563eb     =  7.4:1  ✓
+   ======================================== */
+
+/* Links */
+a:not(.btn):not(.nav-link):not(.skip-link):not(.footer-links a) {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+/* Better text rendering */
+body {
+    text-rendering: optimizeLegibility;
+}
+
+/* label cursor */
+label[for] { cursor: pointer; }
+
