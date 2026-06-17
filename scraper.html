@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Scraper — Finance Tracker</title>
+    <style>
+        /* ---- Tokens ---- */
+        :root {
+            --navy:   #0f172a;
+            --navy-2: #1e293b;
+            --navy-3: #334155;
+            --slate:  #64748b;
+            --silver: #cbd5e1;
+            --white:  #f8fafc;
+            --blue:   #2563eb;
+            --blue-l: #3b82f6;
+            --green:  #059669;
+            --radius: 8px;
+            --font: 'Inter', system-ui, sans-serif;
+            --mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font);
+            background: var(--navy);
+            color: var(--white);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* ---- Layout ---- */
+        .page-header {
+            background: var(--navy-2);
+            border-bottom: 1px solid var(--navy-3);
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .back-link {
+            color: var(--silver);
+            text-decoration: none;
+            font-size: 0.8rem;
+            padding: 6px 12px;
+            border: 1px solid var(--navy-3);
+            border-radius: var(--radius);
+            transition: border-color 150ms;
+        }
+        .back-link:hover { border-color: var(--silver); color: var(--white); }
+        .page-title { font-size: 1.15rem; font-weight: 700; }
+        .page-subtitle { font-size: 0.8rem; color: var(--slate); margin-left: auto; }
+
+        .page-main { max-width: 1200px; margin: 0 auto; padding: 28px 20px 60px; }
+
+        .intro-box {
+            background: var(--navy-2);
+            border: 1px solid var(--navy-3);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            margin-bottom: 28px;
+            font-size: 0.85rem;
+            color: var(--silver);
+            line-height: 1.7;
+        }
+        .intro-box strong { color: var(--white); }
+
+        /* ---- Two-column workspace ---- */
+        .workspace {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            align-items: start;
+            margin-bottom: 28px;
+        }
+        @media (max-width: 820px) { .workspace { grid-template-columns: 1fr; } }
+
+        .panel {
+            background: var(--navy-2);
+            border: 1px solid var(--navy-3);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .panel-title {
+            background: var(--navy-3);
+            padding: 10px 18px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--silver);
+        }
+        .panel-body { padding: 18px; }
+
+        /* ---- Snippet table ---- */
+        .report-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .meta-chip {
+            background: var(--navy-3);
+            border-radius: 4px;
+            padding: 4px 10px;
+            font-size: 0.78rem;
+            color: var(--silver);
+        }
+        .meta-chip strong { color: var(--white); }
+
+        .expense-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+        }
+        .expense-table th {
+            background: var(--navy-3);
+            color: var(--silver);
+            text-align: left;
+            padding: 8px 10px;
+            font-size: 0.72rem;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+        }
+        .expense-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--navy-3);
+            color: var(--white);
+        }
+        .expense-table tbody tr:last-child td { border-bottom: none; }
+        .expense-table tbody tr:hover td { background: rgba(37,99,235,.08); }
+
+        .cat-pill {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+        .cat-pill.Food          { background: #fff7ed; color: #c2410c; }
+        .cat-pill.Books         { background: #eff6ff; color: #1d4ed8; }
+        .cat-pill.Transport     { background: #ecfdf5; color: #047857; }
+        .cat-pill.Entertainment { background: #f5f3ff; color: #6d28d9; }
+        .cat-pill.Fees          { background: #fef2f2; color: #b91c1c; }
+        .cat-pill.Other         { background: #f1f5f9; color: #475569; }
+
+        /* ---- Output panel ---- */
+        .btn-row { display: flex; gap: 10px; margin-bottom: 14px; }
+
+        .scrape-btn {
+            background: var(--blue);
+            color: #fff;
+            border: none;
+            padding: 9px 20px;
+            border-radius: var(--radius);
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 150ms;
+        }
+        .scrape-btn:hover { background: var(--blue-l); }
+        .scrape-btn:disabled { opacity: .5; cursor: default; }
+
+        .copy-btn {
+            background: var(--navy-3);
+            color: var(--silver);
+            border: 1px solid var(--navy-3);
+            padding: 9px 20px;
+            border-radius: var(--radius);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 150ms, color 150ms;
+        }
+        .copy-btn:not(:disabled):hover { background: #475569; color: var(--white); }
+        .copy-btn:disabled { opacity: .4; cursor: default; }
+
+        #json-output {
+            background: var(--navy);
+            border: 1px solid var(--navy-3);
+            border-radius: var(--radius);
+            padding: 14px;
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            color: #a5f3fc;
+            white-space: pre;
+            overflow-x: auto;
+            min-height: 120px;
+            max-height: 480px;
+            overflow-y: auto;
+            line-height: 1.55;
+        }
+        #json-output.placeholder { color: var(--slate); }
+
+        /* ---- Selectors reference ---- */
+        .selectors-panel {
+            background: var(--navy-2);
+            border: 1px solid var(--navy-3);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .selectors-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+        }
+        .selectors-table th {
+            background: var(--navy-3);
+            color: var(--silver);
+            padding: 9px 16px;
+            text-align: left;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+        .selectors-table td { padding: 9px 16px; border-bottom: 1px solid var(--navy-3); }
+        .selectors-table tr:last-child td { border-bottom: none; }
+        .selectors-table code {
+            background: var(--navy);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            color: #86efac;
+        }
+        .selectors-table .desc-col { color: var(--silver); }
+
+        .badge-parsed {
+            display: inline-block;
+            background: rgba(5,150,105,.15);
+            color: #34d399;
+            border: 1px solid rgba(5,150,105,.3);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        .badge-parsed.hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<header class="page-header">
+    <a href="index.html" class="back-link">&#8592; Back to App</a>
+    <h1 class="page-title">Expense Report Scraper</h1>
+    <span class="page-subtitle">jQuery &bull; Static HTML &rarr; JSON</span>
+</header>
+
+<main class="page-main">
+
+    <div class="intro-box">
+        This page uses <strong>jQuery</strong> selectors to scrape a static HTML expense-report snippet and extract structured
+        JSON data — no server, no API. Click <strong>Parse Expenses</strong> to run the selectors against the rendered
+        HTML on the left. The resulting JSON is compatible with the Finance Tracker's import format.
+    </div>
+
+    <div class="workspace">
+
+        <!-- ===== Source HTML snippet ===== -->
+        <div class="panel">
+            <div class="panel-title">Source HTML Snippet <span id="parsed-badge" class="badge-parsed hidden">Parsed</span></div>
+            <div class="panel-body">
+
+                <!-- This entire block is the "static HTML snippet" that jQuery will scrape -->
+                <div id="snippet">
+
+                    <div class="report-meta">
+                        <span class="meta-chip"><strong>Student:</strong> <span class="report-student" data-student-id="ALU-2025-0042">Ajang Biar</span></span>
+                        <span class="meta-chip"><strong>Period:</strong> <span class="report-period">September 2025</span></span>
+                        <span class="meta-chip"><strong>Dept:</strong> <span class="report-dept">Engineering &amp; Technology</span></span>
+                    </div>
+
+                    <table class="expense-table" id="expense-report">
+                        <thead>
+                            <tr>
+                                <th>Ref</th>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Category</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="expense-row" data-ref="EXP-001">
+                                <td class="ref">EXP-001</td>
+                                <td class="date">2025-09-03</td>
+                                <td class="desc">Lunch at cafeteria</td>
+                                <td class="amount">$8.50</td>
+                                <td class="cat"><span class="cat-pill Food">Food</span></td>
+                            </tr>
+                            <tr class="expense-row" data-ref="EXP-002">
+                                <td class="ref">EXP-002</td>
+                                <td class="date">2025-09-05</td>
+                                <td class="desc">Introduction to Python textbook</td>
+                                <td class="amount">$42.00</td>
+                                <td class="cat"><span class="cat-pill Books">Books</span></td>
+                            </tr>
+                            <tr class="expense-row" data-ref="EXP-003">
+                                <td class="ref">EXP-003</td>
+                                <td class="date">2025-09-07</td>
+                                <td class="desc">Bus fare to city centre</td>
+                                <td class="amount">$2.50</td>
+                                <td class="cat"><span class="cat-pill Transport">Transport</span></td>
+                            </tr>
+                            <tr class="expense-row" data-ref="EXP-004">
+                                <td class="ref">EXP-004</td>
+                                <td class="date">2025-09-10</td>
+                                <td class="desc">Cinema with study group</td>
+                                <td class="amount">$12.00</td>
+                                <td class="cat"><span class="cat-pill Entertainment">Entertainment</span></td>
+                            </tr>
+                            <tr class="expense-row" data-ref="EXP-005">
+                                <td class="ref">EXP-005</td>
+                                <td class="date">2025-09-12</td>
+                                <td class="desc">Semester registration fee</td>
+                                <td class="amount">$120.00</td>
+                                <td class="cat"><span class="cat-pill Fees">Fees</span></td>
+                            </tr>
+                            <tr class="expense-row" data-ref="EXP-006">
+                                <td class="ref">EXP-006</td>
+                                <td class="date">2025-09-15</td>
+                                <td class="desc">Dinner at campus grill</td>
+                                <td class="amount">$14.75</td>
+                                <td class="cat"><span class="cat-pill Food">Food</span></td>
+                            </tr>
+                            <tr class="expense-row" data-ref="EXP-007">
+                                <td class="ref">EXP-007</td>
+                                <td class="date">2025-09-18</td>
+                                <td class="desc">Notebook and stationery</td>
+                                <td class="amount">$6.30</td>
+                                <td class="cat"><span class="cat-pill Other">Other</span></td>
+                            </tr>
+                            <tr class="expense-row" data-ref="EXP-008">
+                                <td class="ref">EXP-008</td>
+                                <td class="date">2025-09-22</td>
+                                <td class="desc">Algorithms textbook</td>
+                                <td class="amount">$55.00</td>
+                                <td class="cat"><span class="cat-pill Books">Books</span></td>
+                            </tr>
+                            <tr class="expense-row" data-ref="EXP-009">
+                                <td class="ref">EXP-009</td>
+                                <td class="date">2025-09-25</td>
+                                <td class="desc">Matatu fare home</td>
+                                <td class="amount">$3.00</td>
+                                <td class="cat"><span class="cat-pill Transport">Transport</span></td>
+                            </tr>
+                            <tr class="expense-row" data-ref="EXP-010">
+                                <td class="ref">EXP-010</td>
+                                <td class="date">2025-09-29</td>
+                                <td class="desc">Weekend groceries</td>
+                                <td class="amount">$22.95</td>
+                                <td class="cat"><span class="cat-pill Food">Food</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div><!-- /#snippet -->
+            </div>
+        </div>
+
+        <!-- ===== JSON output ===== -->
+        <div class="panel">
+            <div class="panel-title">Extracted JSON</div>
+            <div class="panel-body">
+                <div class="btn-row">
+                    <button class="scrape-btn" id="parse-btn">Parse Expenses</button>
+                    <button class="copy-btn"   id="copy-btn" disabled>Copy JSON</button>
+                </div>
+                <pre id="json-output" class="placeholder">Click "Parse Expenses" to run the jQuery selectors...</pre>
+            </div>
+        </div>
+
+    </div><!-- /.workspace -->
+
+    <!-- ===== Selectors reference ===== -->
+    <div class="selectors-panel">
+        <div class="panel-title">jQuery Selectors Used</div>
+        <table class="selectors-table">
+            <thead>
+                <tr>
+                    <th style="width:45%">Selector / Expression</th>
+                    <th>What It Extracts</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>$('.report-student').text()</code></td>
+                    <td class="desc-col">Student name from the report header</td>
+                </tr>
+                <tr>
+                    <td><code>$('[data-student-id]').data('student-id')</code></td>
+                    <td class="desc-col">Student ID stored in a custom data attribute</td>
+                </tr>
+                <tr>
+                    <td><code>$('.report-period').text()</code></td>
+                    <td class="desc-col">Reporting period string</td>
+                </tr>
+                <tr>
+                    <td><code>$('.expense-row').each(function() { ... })</code></td>
+                    <td class="desc-col">Iterates every expense row in the table</td>
+                </tr>
+                <tr>
+                    <td><code>$row.data('ref')</code></td>
+                    <td class="desc-col">Reference number from the row's <code>data-ref</code> attribute</td>
+                </tr>
+                <tr>
+                    <td><code>$row.find('.date').text()</code></td>
+                    <td class="desc-col">Date cell content per row</td>
+                </tr>
+                <tr>
+                    <td><code>$row.find('.desc').text()</code></td>
+                    <td class="desc-col">Description cell content per row</td>
+                </tr>
+                <tr>
+                    <td><code>parseFloat($row.find('.amount').text().replace(/[$,]/g, ''))</code></td>
+                    <td class="desc-col">Numeric amount — strips $ and , before parsing</td>
+                </tr>
+                <tr>
+                    <td><code>$row.find('.cat-pill').text()</code></td>
+                    <td class="desc-col">Category label from the styled pill span</td>
+                </tr>
+                <tr>
+                    <td><code>expenses.reduce((s, e) => s + e.amount, 0)</code></td>
+                    <td class="desc-col">Total amount summed from extracted rows</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
+<!-- jQuery (allowed on scraper page per spec) -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script>
+$(function () {
+    /* ---- Parse button ---- */
+    $('#parse-btn').on('click', function () {
+
+        // --- Header metadata ---
+        const student   = $('.report-student').text().trim();
+        const studentId = $('[data-student-id]').data('studentId') || $('[data-student-id]').attr('data-student-id');
+        const period    = $('.report-period').text().trim();
+        const dept      = $('.report-dept').text().trim();
+
+        // --- Expense rows ---
+        const expenses = [];
+        $('.expense-row').each(function () {
+            const $row    = $(this);
+            const rawAmt  = $row.find('.amount').text().trim();
+            const amount  = parseFloat(rawAmt.replace(/[$,]/g, ''));
+            expenses.push({
+                ref:         $row.data('ref'),
+                date:        $row.find('.date').text().trim(),
+                description: $row.find('.desc').text().trim(),
+                amount:      isNaN(amount) ? 0 : amount,
+                category:    $row.find('.cat-pill').text().trim()
+            });
+        });
+
+        // --- Summary ---
+        const total = expenses.reduce((s, e) => s + e.amount, 0);
+
+        const result = {
+            student,
+            studentId,
+            period,
+            department: dept,
+            totalRecords: expenses.length,
+            totalAmount:  parseFloat(total.toFixed(2)),
+            expenses
+        };
+
+        const json = JSON.stringify(result, null, 2);
+        $('#json-output')
+            .text(json)
+            .removeClass('placeholder');
+
+        $('#copy-btn').prop('disabled', false);
+        $('#parsed-badge').removeClass('hidden');
+    });
+
+    /* ---- Copy button ---- */
+    $('#copy-btn').on('click', function () {
+        const text = $('#json-output').text();
+        if (!navigator.clipboard) {
+            // Fallback: select + execCommand
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            flashCopyBtn(this);
+            return;
+        }
+        navigator.clipboard.writeText(text).then(() => flashCopyBtn(this));
+    });
+
+    function flashCopyBtn(btn) {
+        const $b = $(btn);
+        $b.text('Copied!');
+        setTimeout(() => $b.text('Copy JSON'), 2000);
+    }
+});
+</script>
+
+</body>
+</html>
+
