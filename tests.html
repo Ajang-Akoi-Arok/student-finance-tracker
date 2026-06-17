@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validation Tests — Student Finance Tracker</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f1f5f9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            padding: 2rem;
+            width: 100%;
+            max-width: 680px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1.25rem;
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .back-link:hover { text-decoration: underline; }
+
+        .card-title {
+            font-size: 1.375rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+
+        .card-subtitle {
+            color: #64748b;
+            font-size: 0.875rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .group { margin-bottom: 1.5rem; }
+
+        .group-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #94a3b8;
+            margin-bottom: 0.5rem;
+        }
+
+        .test-item {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            padding: 0.45rem 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 0.3rem;
+            font-size: 0.875rem;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .test-item.pass { background: #f0fdf4; color: #15803d; }
+        .test-item.fail { background: #fef2f2; color: #dc2626; }
+
+        .test-icon { font-weight: 700; flex-shrink: 0; }
+
+        .divider { border: none; border-top: 2px solid #e2e8f0; margin: 1.5rem 0; }
+
+        .summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .summary-stat {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .summary-stat.pass { color: #16a34a; }
+        .summary-stat.fail { color: #dc2626; }
+        .summary-stat.rate { color: #64748b; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <a href="index.html" class="back-link">← Back to App</a>
+        <h1 class="card-title">Regex Validation Tests</h1>
+        <p class="card-subtitle">
+            Runs all 5 validation rules against sample inputs and reports pass / fail.
+        </p>
+
+        <div id="test-output"></div>
+        <hr class="divider">
+        <div class="summary" id="summary" role="status" aria-live="polite"></div>
+    </div>
+
+    <script type="module">
+        import { validateField } from './scripts/validators.js';
+
+        // Each test: the field to validate, the input value, and whether we expect it to be valid
+        const TEST_CASES = [
+            // Description
+            { group: 'Description',               field: 'description', value: 'Lunch at cafeteria', expect: true  },
+            { group: 'Description',               field: 'description', value: 'X',                  expect: true  },
+            { group: 'Description',               field: 'description', value: ' spaces ',            expect: false },
+            { group: 'Description',               field: 'description', value: 'trailing ',           expect: false },
+            // Advanced: back-reference detects duplicate words
+            { group: 'Description (dup words)',   field: 'description', value: 'test test',           expect: false },
+            { group: 'Description (dup words)',   field: 'description', value: 'Coffee COFFEE',       expect: false },
+            { group: 'Description (dup words)',   field: 'description', value: 'no duplicates here',  expect: true  },
+
+            // Amount
+            { group: 'Amount',  field: 'amount', value: '12.50',   expect: true  },
+            { group: 'Amount',  field: 'amount', value: '0',       expect: true  },
+            { group: 'Amount',  field: 'amount', value: '999.99',  expect: true  },
+            { group: 'Amount',  field: 'amount', value: '-5',      expect: false },
+            { group: 'Amount',  field: 'amount', value: '12.999',  expect: false },
+            { group: 'Amount',  field: 'amount', value: 'abc',     expect: false },
+
+            // Date
+            { group: 'Date',    field: 'date',   value: '2025-09-29', expect: true  },
+            { group: 'Date',    field: 'date',   value: '2025-01-01', expect: true  },
+            { group: 'Date',    field: 'date',   value: '29-09-2025', expect: false },
+            { group: 'Date',    field: 'date',   value: '2025-13-01', expect: false },
+            { group: 'Date',    field: 'date',   value: '2025-02-30', expect: false },
+
+            // Category
+            { group: 'Category', field: 'category', value: 'Food',         expect: true  },
+            { group: 'Category', field: 'category', value: 'Coffee Shop',  expect: true  },
+            { group: 'Category', field: 'category', value: 'On-Campus',    expect: true  },
+            { group: 'Category', field: 'category', value: '123Food',      expect: false },
+            { group: 'Category', field: 'category', value: 'Food & Drink', expect: false },
+        ];
+
+        // Group tests by their group name
+        const groups = {};
+        TEST_CASES.forEach(t => {
+            if (!groups[t.group]) groups[t.group] = [];
+            groups[t.group].push(t);
+        });
+
+        let passed = 0;
+        const total = TEST_CASES.length;
+        const output = document.getElementById('test-output');
+
+        Object.entries(groups).forEach(([groupName, items]) => {
+            const groupEl = document.createElement('div');
+            groupEl.className = 'group';
+            groupEl.innerHTML = `<p class="group-label">${groupName}</p>`;
+
+            items.forEach(t => {
+                const result = validateField(t.field, t.value);
+                const ok     = result.isValid === t.expect;
+                if (ok) passed++;
+
+                const item = document.createElement('div');
+                item.className = `test-item ${ok ? 'pass' : 'fail'}`;
+                item.innerHTML =
+                    `<span class="test-icon">${ok ? '✓' : '✗'}</span>` +
+                    `"${t.value}" → expected ${t.expect ? 'valid' : 'invalid'}` +
+                    (ok ? '' : ` <em>(got ${result.isValid ? 'valid' : 'invalid'})</em>`);
+                groupEl.appendChild(item);
+            });
+
+            output.appendChild(groupEl);
+        });
+
+        // Summary
+        const rate = ((passed / total) * 100).toFixed(1);
+        document.getElementById('summary').innerHTML = `
+            <span class="summary-stat pass">✓ Passed: ${passed} / ${total}</span>
+            ${passed < total
+                ? `<span class="summary-stat fail">✗ Failed: ${total - passed} / ${total}</span>`
+                : '<span class="summary-stat pass">All tests passed!</span>'}
+            <span class="summary-stat rate">Success rate: ${rate}%</span>
+        `;
+    </script>
+</body>
+</html>
