@@ -320,7 +320,7 @@ The `id` field is generated automatically and never changes after creation. When
 
 ## Demo Video
 
-**[Watch the 2-minute walkthrough on YouTube](https://youtu.be/)**
+**[Watch the 2-minute walkthrough on YouTube](https://youtu.be/REPLACE_WITH_YOUR_UNLISTED_VIDEO_ID)**
 
 The video covers the following:
 
