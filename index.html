@@ -197,7 +197,7 @@
                     </div>
                     <div class="sort-controls">
                         <label for="sort-field">Sort by:</label>
-                        <select id="sort-field" aria-label="Sort records by field">
+                        <select id="sort-field">
                             <option value="date">Date</option>
                             <option value="description">Description (A–Z)</option>
                             <option value="amount">Amount</option>
@@ -306,7 +306,7 @@
                     <h3>Currency Settings</h3>
                     <div class="form-group">
                         <label for="base-currency">Base Currency:</label>
-                        <select id="base-currency" aria-label="Select base currency">
+                        <select id="base-currency">
                             <option value="USD">USD ($)</option>
                             <option value="RWF">RWF (RF)</option>
                             <option value="UGX">UGX (USh)</option>
@@ -314,7 +314,7 @@
                     </div>
                     <div class="form-group">
                         <label for="display-currency">Display Currency:</label>
-                        <select id="display-currency" aria-label="Select display currency for conversion">
+                        <select id="display-currency">
                             <option value="USD">USD ($)</option>
                             <option value="RWF">RWF (RF)</option>
                             <option value="UGX">UGX (USh)</option>
@@ -324,13 +324,11 @@
                         <h4>Exchange Rates (vs USD)</h4>
                         <div class="form-group">
                             <label for="rate-rwf">1 USD = ? RWF</label>
-                            <input type="number" id="rate-rwf" step="1" value="1300"
-                                   aria-label="Exchange rate USD to RWF" min="1">
+                            <input type="number" id="rate-rwf" step="1" value="1300" min="1">
                         </div>
                         <div class="form-group">
                             <label for="rate-ugx">1 USD = ? UGX</label>
-                            <input type="number" id="rate-ugx" step="1" value="3700"
-                                   aria-label="Exchange rate USD to UGX" min="1">
+                            <input type="number" id="rate-ugx" step="1" value="3700" min="1">
                         </div>
                     </div>
                 </div>
