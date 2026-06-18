@@ -37,9 +37,7 @@ export function compileRegex(input, caseInsensitive) {
 
 // ---- escapeHtml ------------------------------------------------------------
 
-// Replace special HTML characters so they display as text instead of markup.
-// This prevents XSS (Cross-Site Scripting) when showing user data in the DOM.
-// Example: '<script>' becomes '&lt;script&gt;'
+// Escape special HTML characters so user input can't inject scripts (XSS).
 export function escapeHtml(text) {
     const str = String(text == null ? '' : text);
 

@@ -31,12 +31,8 @@ const RULES = {
         msg: 'Letters, spaces, and hyphens only (e.g., Food, On-Campus)'
     },
 
-    // Rule 5 (Advanced) — Catches duplicate consecutive words using a back-reference.
-    //   \b(\w+)\s+\1\b
-    //   (\w+)  captures the first word into group 1
-    //   \1     matches the exact same word again
-    // Catches: "test test", "coffee COFFEE"
-    // Does NOT catch: "test testing" (different words)
+    // Rule 5 (Advanced) — back-reference \1 catches the same word repeated twice.
+    // e.g. "test test" or "Coffee COFFEE" both fail. "test testing" is fine.
     duplicateWords: {
         re:  /\b(\w+)\s+\1\b/i,
         msg: 'Description contains duplicate consecutive words'
@@ -136,8 +132,7 @@ export function validateRecord(record) {
 }
 
 // ---- getValidatorCatalog ---------------------------------------------------
-// Returns all 5 rules with their patterns and sample test cases.
-// Used by tests.html to display the validation test suite.
+// All 5 rules with sample inputs. Used by tests.html for display.
 export function getValidatorCatalog() {
     return [
         {

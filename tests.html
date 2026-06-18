@@ -109,7 +109,7 @@
     <script type="module">
         import { validateField } from './scripts/validators.js';
 
-        // Each test: the field to validate, the input value, and whether we expect it to be valid
+        // Each test: field to validate, input value, and whether it should pass
         const TEST_CASES = [
             // Description
             { group: 'Description',               field: 'description', value: 'Lunch at cafeteria', expect: true  },
@@ -144,7 +144,7 @@
             { group: 'Category', field: 'category', value: 'Food & Drink', expect: false },
         ];
 
-        // Group tests by their group name
+        // Group tests by name so they render under headings
         const groups = {};
         TEST_CASES.forEach(t => {
             if (!groups[t.group]) groups[t.group] = [];

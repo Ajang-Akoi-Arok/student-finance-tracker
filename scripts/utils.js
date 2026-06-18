@@ -196,21 +196,19 @@ export function sortRecords(records, field, sortDesc) {
 
 // ---- Debounce --------------------------------------------------------------
 
-// Wrap a function so it only runs after the user stops calling it for `delay` ms.
-// Useful for search inputs: wait until the user stops typing before searching.
+// Delays fn until the user stops calling it for `delay` ms.
+// Prevents the search from firing on every single keystroke.
 export function debounce(fn, delay) {
     if (delay === undefined) delay = 300;
 
-    let timer; // holds the ID of the scheduled timeout
+    let timer;
 
     return function() {
         const args    = arguments;
         const context = this;
 
-        // Cancel any previous scheduled call
-        clearTimeout(timer);
+        clearTimeout(timer); // reset the countdown on each call
 
-        // Schedule a new call after the delay
         timer = setTimeout(function() {
             fn.apply(context, args);
         }, delay);

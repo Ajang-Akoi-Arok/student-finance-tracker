@@ -1,8 +1,6 @@
 // state.js
-// Holds ALL app data in one place and notifies the rest of the app when anything changes.
-// This pattern is called "pub/sub" (publish / subscribe):
-//   - any part of the app can "subscribe" to hear about changes
-//   - when data changes, state "publishes" (notifies) all subscribers
+// Central store for all app data. Uses pub/sub: other modules subscribe to hear
+// about changes so they can update the UI without state knowing about them.
 
 import { loadRecords, saveRecords, loadSettings, saveSettings, generateId } from './storage.js';
 
@@ -13,20 +11,18 @@ class AppState {
         this.settings = loadSettings();
 
         // UI state — tracks what the user is currently doing
-        this.currentSection      = 'dashboard'; // which page is visible
-        this.editingRecordId     = null;         // ID of record being edited (null = add mode)
-        this.sortField           = 'date';       // which column to sort by
-        this.sortDesc            = true;         // true = newest/largest first
-        this.searchPattern       = '';           // current search text
-        this.searchCaseInsensitive = true;       // ignore uppercase/lowercase in search
-        this.deleteConfirmingId  = null;         // ID of record waiting for delete confirmation
+        this.currentSection        = 'dashboard'; // which page is visible
+        this.editingRecordId       = null;         // ID of record being edited (null = add mode)
+        this.sortField             = 'date';       // which column to sort by
+        this.sortDesc              = true;         // true = newest/largest first
+        this.searchPattern         = '';           // current search text
+        this.searchCaseInsensitive = true;         // ignore uppercase/lowercase in search
+        this.deleteConfirmingId    = null;         // ID of record waiting for delete confirmation
 
-        // Internal list of listener functions to call when state changes
-        this._listeners = new Set();
+        this._listeners = new Set(); // Set prevents duplicate listeners
     }
 
-    // Register a function to be called whenever state changes.
-    // Returns a function you can call to stop listening (unsubscribe).
+    // Register a listener. Returns a function to remove it later.
     subscribe(listenerFn) {
         this._listeners.add(listenerFn);
         return function unsubscribe() {
@@ -34,9 +30,7 @@ class AppState {
         }.bind(this);
     }
 
-    // Tell all subscribers that something changed.
-    // type  = a string like 'record:added' describing what happened
-    // payload = the data that changed
+    // Fire all listeners with the event type and changed data.
     _notify(type, payload) {
         this._listeners.forEach(function(listenerFn) {
             listenerFn({ type: type, payload: payload });

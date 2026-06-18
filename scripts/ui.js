@@ -18,8 +18,7 @@ function displayAmount(amount) {
 
 // ---- Animated number counter -----------------------------------------------
 
-// Count a stat element from 0 up to targetValue over `ms` milliseconds.
-// format = a function that turns a number into the display string (e.g., currency).
+// Counts a stat value from 0 to targetValue over `ms` ms using a smooth ease-out curve.
 function animateCount(element, targetValue, format, ms) {
     if (ms === undefined) ms = 650;
 
@@ -27,15 +26,15 @@ function animateCount(element, targetValue, format, ms) {
 
     function step(currentTime) {
         const elapsed  = currentTime - startTime;
-        const progress = Math.min(elapsed / ms, 1);             // 0 → 1
-        const eased    = 1 - Math.pow(1 - progress, 3);         // ease-out cubic curve
+        const progress = Math.min(elapsed / ms, 1);
+        const eased    = 1 - Math.pow(1 - progress, 3); // ease-out cubic
 
         element.textContent = format(targetValue * eased);
 
         if (progress < 1) {
-            requestAnimationFrame(step); // keep going until progress reaches 1
+            requestAnimationFrame(step);
         } else {
-            element.textContent = format(targetValue); // snap to exact final value
+            element.textContent = format(targetValue); // snap to final value
         }
     }
 
@@ -148,7 +147,7 @@ export function renderRecords(callbacks) {
     // 4. Render desktop TABLE rows
     const tableRows = filtered.map(function(record, index) {
         const fields = buildFieldHtml(record, highlightRegex);
-        const delay  = Math.min(index, 12) * 35; // stagger animation, cap at 12
+        const delay  = Math.min(index, 12) * 35; // stagger animation, cap at 12 rows
 
         return [
             '<tr class="row-enter" style="animation-delay:' + delay + 'ms">',
@@ -363,7 +362,7 @@ function updateChart() {
 
     chart.innerHTML = rows.join('');
 
-    // Animate the bars after the first paint (double rAF ensures the DOM is ready)
+    // Double rAF lets the browser paint the initial width:0% before we animate to final width.
     requestAnimationFrame(function() {
         requestAnimationFrame(function() {
             const bars = chart.querySelectorAll('.chart-row-fill[data-width]');
