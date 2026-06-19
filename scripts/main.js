@@ -374,6 +374,31 @@ function clearAllErrors() {
     }
 }
 
+function validateInlineField(field, showRequired) {
+    if (showRequired === undefined) showRequired = false;
+    const input = document.getElementById('inline-' + field);
+    if (!input) return;
+    if (!input.value && !showRequired) {
+        clearInlineFieldError(field);
+        return;
+    }
+    const result = validateField(field, input.value);
+    if (!result.isValid) {
+        const errorEl = document.getElementById('inline-error-' + field);
+        if (errorEl) errorEl.textContent = result.message;
+        input.parentElement.classList.add('error');
+    } else {
+        clearInlineFieldError(field);
+    }
+}
+
+function clearInlineFieldError(field) {
+    const errorEl = document.getElementById('inline-error-' + field);
+    const inputEl = document.getElementById('inline-' + field);
+    if (errorEl) errorEl.textContent = '';
+    if (inputEl) inputEl.parentElement.classList.remove('error');
+}
+
 
 // DELETE
 
@@ -475,8 +500,8 @@ function addCategory() {
         return;
     }
 
-    state.settings.categories.push(categoryName);
-    state.updateSettings({ categories: state.settings.categories });
+    const updated = state.settings.categories.concat([categoryName]);
+    state.updateSettings({ categories: updated });
     input.value = '';
     showToast('Category "' + categoryName + '" added', 'success');
     input.focus();
@@ -771,6 +796,18 @@ function setupInlineForm() {
 
     // Default date to today
     document.getElementById('inline-date').value = formatDate(new Date());
+
+    // Live validation — mirrors the modal form behaviour
+    ['description', 'amount', 'date', 'category'].forEach(function(field) {
+        const input = document.getElementById('inline-' + field);
+        if (!input) return;
+        input.addEventListener('input', debounce(function() {
+            if (input.value.trim()) validateInlineField(field);
+            else clearInlineFieldError(field);
+        }, 250));
+        input.addEventListener('blur',   function() { validateInlineField(field, true); });
+        input.addEventListener('change', function() { validateInlineField(field, true); });
+    });
 
     form.addEventListener('submit', function(e) {
         e.preventDefault();

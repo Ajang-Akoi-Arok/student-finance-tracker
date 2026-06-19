@@ -341,7 +341,7 @@ h1.logo {
 }
 
 @media (min-width: 480px) {
-    .section-container { border-radius: 0; padding: var(--sp-8); }
+    .section-container { border-radius: var(--r-lg); padding: var(--sp-8); }
 }
 
 /* Dashboard */
@@ -402,7 +402,7 @@ h1.logo {
 }
 
 .stat-card {
-    border-radius: 0;
+    border-radius: var(--r-lg);
     padding: var(--sp-4) var(--sp-5);
     color: white;
     position: relative;
@@ -493,7 +493,7 @@ h1.logo {
 /* Budget Banner */
 
 .budget-banner {
-    border-radius: 0;
+    border-radius: var(--r-md);
     padding: var(--sp-4) var(--sp-5);
     font-weight: 600;
     font-size: var(--text-sm);
@@ -511,7 +511,7 @@ h1.logo {
 figure.chart-container {
     background: var(--white);
     border: 1px solid var(--gray-200);
-    border-radius: 0;
+    border-radius: var(--r-lg);
     padding: var(--sp-6);
     margin: 0 0 var(--sp-6) 0;
     box-shadow: var(--shadow-sm);
@@ -605,7 +605,7 @@ figcaption.chart-header {
     background: var(--gray-50);
     border: 1px solid var(--gray-200);
     padding: var(--sp-5);
-    border-radius: 0;
+    border-radius: var(--r-lg);
 }
 
 .search-box { display: flex; flex-direction: column; gap: var(--sp-2); flex: 1; }
@@ -680,7 +680,7 @@ figcaption.chart-header {
 
 .table-wrapper {
     display: none;
-    border-radius: 0;
+    border-radius: var(--r-lg);
     border: 1px solid var(--gray-200);
     overflow: hidden;
     overflow-x: auto;
@@ -765,7 +765,7 @@ mark {
 .record-card {
     background: var(--white);
     border: 1px solid var(--gray-200);
-    border-radius: 0;
+    border-radius: var(--r-lg);
     padding: var(--sp-5);
     transition: box-shadow var(--ease), transform var(--ease);
 }
@@ -869,7 +869,7 @@ mark {
 .exchange-rates {
     background: var(--gray-50);
     border: 1px solid var(--gray-200);
-    border-radius: 0;
+    border-radius: var(--r-md);
     padding: var(--sp-5);
     margin-top: var(--sp-4);
 }
@@ -943,7 +943,7 @@ dialog.modal[open]       { display: flex; }
 
 .modal-content {
     background: var(--white);
-    border-radius: 0;
+    border-radius: var(--r-xl);
     box-shadow: var(--shadow-xl);
     max-width: 480px;
     width: 100%;
@@ -1103,7 +1103,7 @@ kbd {
 
 .toast {
     padding: var(--sp-3) var(--sp-5);
-    border-radius: 0;
+    border-radius: var(--r-md);
     font-weight: 500;
     font-size: var(--text-sm);
     max-width: 340px;
@@ -1230,7 +1230,7 @@ kbd {
     .dashboard-header-actions .btn { padding: 8px var(--sp-3); font-size: var(--text-sm); }
 
     .stats-grid { grid-template-columns: repeat(2, 1fr); gap: var(--sp-3); margin-bottom: var(--sp-4); }
-    .stat-card { padding: var(--sp-3); border-radius: 0; }
+    .stat-card { padding: var(--sp-3); }
     .stat-card h3 { font-size: 9px; letter-spacing: .06em; margin-bottom: var(--sp-2); }
     /* Scale value with viewport so UGX amounts fit in a half-width card */
     .stat-value { font-size: clamp(0.8rem, 3.8vw, 1.1rem); margin-bottom: var(--sp-1); }
@@ -1246,7 +1246,7 @@ kbd {
     .chart-row-day { font-size: 10px; }
     .chart-row-amt { font-size: 10px; }
 
-    .modal-content { border-radius: 0; margin: var(--sp-3); width: calc(100% - var(--sp-6)); }
+    .modal-content { margin: var(--sp-3); width: calc(100% - var(--sp-6)); }
     .modal-body, .transaction-form { padding: var(--sp-4); }
     .modal-header { padding: var(--sp-4); }
 
@@ -1628,7 +1628,7 @@ kbd {
 .about-card {
     background: var(--white);
     border: 1px solid var(--gray-200);
-    border-radius: 0;
+    border-radius: var(--r-lg);
     padding: var(--sp-8);
     box-shadow: none;
     /* starts hidden, animated in by IntersectionObserver */
