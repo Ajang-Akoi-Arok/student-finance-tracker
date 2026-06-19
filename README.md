@@ -324,13 +324,6 @@ The `id` field is generated automatically and never changes after creation. When
 
 **[Watch walkthrough on YouTube](https://youtu.be/5CUSiD6XTXI)**
 
-The video covers the following:
-
-- Keyboard-only navigation through all five sections: Home, Dashboard, Records, Settings, and About
-- Using the regex search with the patterns `coffee|tea`, `\b(\w+)\s+\1\b` for duplicate words, and `\.99$` for amounts ending in ninety-nine cents, plus an invalid pattern to show the error handling
-- A full import and export round trip: exporting records to a file, clearing all data, re-importing the file, and verifying that importing the same file twice correctly skips the duplicate IDs
-- The responsive layout adapting from a phone at 360 pixels to a full desktop view
-
 ---
 
 ## thanks
