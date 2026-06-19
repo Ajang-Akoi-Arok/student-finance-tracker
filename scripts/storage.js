@@ -1,12 +1,11 @@
 // storage.js
-// Handles saving and loading all data in the browser's localStorage.
-// localStorage stores text, so we convert objects to JSON strings and back.
+
 
 // The keys used to store data in localStorage
-const DATA_KEY     = 'finance-tracker-records';   // stores the list of transactions
-const SETTINGS_KEY = 'finance-tracker-settings';  // stores app settings (currency, budget cap, etc.)
+const DATA_KEY     = 'finance-tracker-records';   
+const SETTINGS_KEY = 'finance-tracker-settings';  
 
-// ---- One-time migration ------------------------------------------------
+//One-time migration
 // Older versions used ":" in the keys. This block moves any saved data to
 // the new keys the first time the app loads, then removes the old keys.
 (function migrate() {
@@ -28,18 +27,17 @@ const SETTINGS_KEY = 'finance-tracker-settings';  // stores app settings (curren
     }
 }());
 
-// ---- Records ---------------------------------------------------------------
-
+// Records
 // Load all saved transactions from localStorage.
 // Returns an empty array [] if nothing has been saved yet.
 export function loadRecords() {
     try {
         const savedText = localStorage.getItem(DATA_KEY);
-        if (!savedText) return [];                         // nothing saved yet
+        if (!savedText) return [];                         
         const parsed = JSON.parse(savedText);
-        return Array.isArray(parsed) ? parsed : [];        // safety check: must be an array
+        return Array.isArray(parsed) ? parsed : [];
     } catch (error) {
-        return [];  // if the saved JSON is broken, start fresh
+        return [];
     }
 }
 
@@ -57,8 +55,7 @@ export function clearRecords() {
     localStorage.removeItem(DATA_KEY);
 }
 
-// ---- Settings --------------------------------------------------------------
-
+//Settings
 // Load saved settings from localStorage.
 // If no settings exist yet, returns the default settings object.
 export function loadSettings() {
@@ -93,18 +90,16 @@ export function getDefaultSettings() {
     };
 }
 
-// ---- ID Generator ----------------------------------------------------------
+//ID Generator
 
-// Create a unique ID for a new transaction.
-// Format: txn_<timestamp>_<5 random characters>
-// Example: txn_1748160000000_A3F9B
+
 export function generateId() {
-    const timestamp  = Date.now();                                           // ms since Jan 1 1970
-    const randomPart = Math.random().toString(36).slice(2, 7).toUpperCase(); // 5 random chars
+    const timestamp  = Date.now();                                           
+    const randomPart = Math.random().toString(36).slice(2, 7).toUpperCase(); 
     return 'txn_' + timestamp + '_' + randomPart;
 }
 
-// ---- JSON Import / Export --------------------------------------------------
+//JSON Import / Export 
 
 // Convert the records array to a formatted JSON string ready for download.
 export function exportJSON(records) {
@@ -142,7 +137,7 @@ export function importJSON(text) {
     }
 }
 
-// ---- CSV Export (RFC 4180 format) ------------------------------------------
+//CSV Export (RFC 4180 format)
 
 // Convert records to a CSV string ready for download.
 export function exportCSV(records) {
@@ -152,7 +147,7 @@ export function exportCSV(records) {
     function formatCell(value) {
         const text = (value == null) ? '' : String(value);
         if (/[,"\r\n]/.test(text)) {
-            return '"' + text.replace(/"/g, '""') + '"'; // double any existing quotes
+            return '"' + text.replace(/"/g, '""') + '"'; 
         }
         return text;
     }

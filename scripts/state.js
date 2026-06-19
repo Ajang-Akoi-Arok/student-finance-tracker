@@ -1,6 +1,5 @@
 // state.js
-// Central store for all app data. Uses pub/sub: other modules subscribe to hear
-// about changes so they can update the UI without state knowing about them.
+
 
 import { loadRecords, saveRecords, loadSettings, saveSettings, generateId } from './storage.js';
 
@@ -11,15 +10,15 @@ class AppState {
         this.settings = loadSettings();
 
         // UI state — tracks what the user is currently doing
-        this.currentSection        = 'dashboard'; // which page is visible
-        this.editingRecordId       = null;         // ID of record being edited (null = add mode)
-        this.sortField             = 'date';       // which column to sort by
-        this.sortDesc              = true;         // true = newest/largest first
-        this.searchPattern         = '';           // current search text
-        this.searchCaseInsensitive = true;         // ignore uppercase/lowercase in search
-        this.deleteConfirmingId    = null;         // ID of record waiting for delete confirmation
+        this.currentSection        = 'dashboard'; 
+        this.editingRecordId       = null;         
+        this.sortField             = 'date';      
+        this.sortDesc              = true;        
+        this.searchPattern         = '';         
+        this.searchCaseInsensitive = true;         
+        this.deleteConfirmingId    = null;         
 
-        this._listeners = new Set(); // Set prevents duplicate listeners
+        this._listeners = new Set(); 
     }
 
     // Register a listener. Returns a function to remove it later.
@@ -37,7 +36,7 @@ class AppState {
         });
     }
 
-    // ---- Records -----------------------------------------------------------
+    //Records 
 
     // Add a new transaction. Assigns an ID and timestamps automatically.
     addRecord(data) {
@@ -97,7 +96,7 @@ class AppState {
         this._notify('records:cleared', null);
     }
 
-    // ---- Settings ----------------------------------------------------------
+    //Settings
 
     // Merge new settings values into the existing settings and save.
     updateSettings(updates) {
@@ -108,7 +107,7 @@ class AppState {
         this._notify('settings:updated', this.settings);
     }
 
-    // ---- UI state setters --------------------------------------------------
+    //UI state setters
     // Each setter saves the new value and notifies subscribers so the UI can react.
 
     setCurrentSection(section) {

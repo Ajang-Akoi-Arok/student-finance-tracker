@@ -1,36 +1,32 @@
 // utils.js
-// Small helper functions used across the app.
-// None of these touch the DOM — they are pure data/calculation utilities.
 
-// ---- Date helpers ----------------------------------------------------------
+//Date helpers
 
 // Format a Date object as a "YYYY-MM-DD" string.
 // Example: new Date() → "2025-09-29"
 export function formatDate(date) {
-    if (typeof date === 'string') date = new Date(date); // accept string input too
+    if (typeof date === 'string') date = new Date(date); 
     if (!(date instanceof Date)) return '';
 
     const year  = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // months are 0-indexed
+    const month = String(date.getMonth() + 1).padStart(2, '0'); 
     const day   = String(date.getDate()).padStart(2, '0');
     return year + '-' + month + '-' + day;
 }
 
 // Parse a "YYYY-MM-DD" string into a local Date object.
-// We split the string to avoid timezone offset issues with new Date("YYYY-MM-DD").
+
 export function parseDate(str) {
     const parts = str.split('-').map(Number); // [2025, 9, 29]
     const year  = parts[0];
-    const month = parts[1] - 1; // months are 0-indexed in JavaScript
+    const month = parts[1] - 1; 
     const day   = parts[2];
     return new Date(year, month, day);
 }
 
-// ---- Currency helpers ------------------------------------------------------
+//Currency helpers
 
-// Format a number as a currency string using the browser's built-in formatter.
-// Examples: formatCurrency(12.5, 'USD') → "$12.50"
-//           formatCurrency(1300, 'RWF') → "RF 1,300"
+
 export function formatCurrency(amount, currency) {
     if (currency === undefined) currency = 'USD';
 
@@ -75,10 +71,9 @@ export function convertAndFormat(amount, fromCurrency, toCurrency, rates) {
     return formatCurrency(converted, toCurrency);
 }
 
-// ---- Spending calculations -------------------------------------------------
+//Spending calculations 
 
-// Return an object that maps each category to the total amount spent in it.
-// Example: { Food: 48.25, Books: 89.99, Transport: 50.00 }
+
 export function sumByCategory(records) {
     const totals = {};
 
@@ -121,7 +116,7 @@ export function getTotalSpending(records) {
     return total;
 }
 
-// ---- Date range helpers ----------------------------------------------------
+// Date range helpers
 
 // Return an array of n date strings, starting n-1 days ago and ending today.
 // Default n = 7, so it returns the last 7 days.
@@ -159,16 +154,14 @@ export function getLastNDaysRecords(records, n) {
     if (n === undefined) n = 7;
 
     const start = new Date();
-    start.setDate(start.getDate() - (n - 1)); // n-1 days ago
+    start.setDate(start.getDate() - (n - 1)); 
 
     return filterByDateRange(records, start, new Date());
 }
 
-// ---- Sorting ---------------------------------------------------------------
+//Sorting
 
-// Return a sorted copy of the records array.
-// field    = the record property to sort by ('date', 'amount', 'description')
-// sortDesc = true means newest/largest first; false means oldest/smallest first
+
 export function sortRecords(records, field, sortDesc) {
     if (field    === undefined) field    = 'date';
     if (sortDesc === undefined) sortDesc = true;
@@ -188,16 +181,14 @@ export function sortRecords(records, field, sortDesc) {
 
         if (valueA < valueB) return sortDesc ? 1  : -1;
         if (valueA > valueB) return sortDesc ? -1 :  1;
-        return 0; // equal values stay in their current order
+        return 0; 
     });
 
     return copy;
 }
 
-// ---- Debounce --------------------------------------------------------------
+//Debounce
 
-// Delays fn until the user stops calling it for `delay` ms.
-// Prevents the search from firing on every single keystroke.
 export function debounce(fn, delay) {
     if (delay === undefined) delay = 300;
 
@@ -207,7 +198,7 @@ export function debounce(fn, delay) {
         const args    = arguments;
         const context = this;
 
-        clearTimeout(timer); // reset the countdown on each call
+        clearTimeout(timer);
 
         timer = setTimeout(function() {
             fn.apply(context, args);

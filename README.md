@@ -1,5 +1,7 @@
 # Student Finance Tracker
 
+Welcome to the Student Finance Tracker! This project was built to help university students take control of their daily spending — tracking expenses, setting budget limits, and understanding where their money goes, all from the browser with no account or installation required.
+
 A responsive budgeting application built for university students using only vanilla HTML, CSS, and JavaScript with ES Modules. No frameworks, no build tools, no external dependencies — just clean, readable code that runs in any modern browser.
 
 **Live Demo:** [https://Ajang-Akoi-Arok.github.io/student-finance-tracker](https://Ajang-Akoi-Arok.github.io/student-finance-tracker)
@@ -320,7 +322,7 @@ The `id` field is generated automatically and never changes after creation. When
 
 ## Demo Video
 
-**[Watch the 2-minute walkthrough on YouTube](https://youtu.be/REPLACE_WITH_YOUR_UNLISTED_VIDEO_ID)**
+**[Watch walkthrough on YouTube](https://youtu.be/5CUSiD6XTXI)**
 
 The video covers the following:
 
@@ -331,11 +333,4 @@ The video covers the following:
 
 ---
 
-## Contact
-
-- **GitHub:** [@Ajang-Akoi-Arok](https://github.com/Ajang-Akoi-Arok)
-- **Email:** [a.biar1@alustudent.com](mailto:a.biar1@alustudent.com)
-
----
-
-Built with vanilla HTML, CSS, and JavaScript. No frameworks. No build tools. No external dependencies.
+## thanks

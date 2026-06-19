@@ -1,8 +1,7 @@
 // validators.js
-// The 5 regex validation rules that guard every transaction field.
-// Each rule has the regex pattern and the error message shown to the user.
 
-// ---- The 5 rules -----------------------------------------------------------
+
+// The 5 rules
 const RULES = {
 
     // Rule 1 — Description must not start or end with a whitespace character
@@ -51,9 +50,9 @@ export const validators = {
 // Check that a "YYYY-MM-DD" string is also a real calendar date.
 // The regex alone allows "2025-02-30" — this function catches those cases.
 function _validDate(val) {
-    if (!RULES.date.re.test(val)) return false; // must pass the format check first
+    if (!RULES.date.re.test(val)) return false; 
 
-    const d = new Date(val + 'T00:00:00Z');     // parse as midnight UTC
+    const d = new Date(val + 'T00:00:00Z');     
 
     // Round-trip check: if the date was invalid (e.g., Feb 30), the Date object
     // will roll over to the next valid date, so the ISO string won't match.
@@ -62,7 +61,7 @@ function _validDate(val) {
            d.toISOString().slice(0, 10) === val;
 }
 
-// ---- validateField ---------------------------------------------------------
+// validateField
 // Check a single form field value.
 // Returns: { isValid: true/false, message: 'error text (empty string if valid)' }
 export function validateField(fieldId, value) {
@@ -111,7 +110,7 @@ export function validateField(fieldId, value) {
     return { isValid: false, message: 'Unknown field' };
 }
 
-// ---- validateRecord --------------------------------------------------------
+// validateRecord 
 // Validate all 4 fields of a transaction object at once.
 // Returns: { isValid: true/false, errors: { fieldName: 'message' } }
 export function validateRecord(record) {
@@ -121,17 +120,17 @@ export function validateRecord(record) {
     for (const field of fields) {
         const result = validateField(field, record[field]);
         if (!result.isValid) {
-            errors[field] = result.message; // collect every failing field
+            errors[field] = result.message; 
         }
     }
 
     return {
-        isValid: Object.keys(errors).length === 0, // true only if no errors
+        isValid: Object.keys(errors).length === 0, 
         errors:  errors
     };
 }
 
-// ---- getValidatorCatalog ---------------------------------------------------
+//getValidatorCatalog 
 // All 5 rules with sample inputs. Used by tests.html for display.
 export function getValidatorCatalog() {
     return [

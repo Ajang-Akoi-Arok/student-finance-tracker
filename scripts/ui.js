@@ -1,12 +1,12 @@
 // ui.js
 // All DOM rendering and display updates.
-// This module reads from `state` and writes to the page — it never changes state directly.
+
 
 import state from './state.js';
 import { compileRegex, searchRecords, highlightMatches, escapeHtml } from './search.js';
 import { convertAndFormat, getTotalSpending, getTopCategory, sortRecords, formatDate } from './utils.js';
 
-// ---- Shared display helper -------------------------------------------------
+//Shared display helper
 
 // Convert and format an amount for display using the current currency settings.
 function displayAmount(amount) {
@@ -16,7 +16,7 @@ function displayAmount(amount) {
     return convertAndFormat(amount, base, display, rates);
 }
 
-// ---- Animated number counter -----------------------------------------------
+// Animated number counter
 
 // Counts a stat value from 0 to targetValue over `ms` ms using a smooth ease-out curve.
 function animateCount(element, targetValue, format, ms) {
@@ -27,14 +27,14 @@ function animateCount(element, targetValue, format, ms) {
     function step(currentTime) {
         const elapsed  = currentTime - startTime;
         const progress = Math.min(elapsed / ms, 1);
-        const eased    = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+        const eased    = 1 - Math.pow(1 - progress, 3);
 
         element.textContent = format(targetValue * eased);
 
         if (progress < 1) {
             requestAnimationFrame(step);
         } else {
-            element.textContent = format(targetValue); // snap to final value
+            element.textContent = format(targetValue); 
         }
     }
 
@@ -44,14 +44,13 @@ function animateCount(element, targetValue, format, ms) {
 // Briefly trigger the "pop" animation on a stat value element.
 function pulse(element) {
     element.classList.remove('stat-value--pop');
-    void element.offsetWidth; // force the browser to notice the class was removed
+    void element.offsetWidth;
     element.classList.add('stat-value--pop');
 }
 
-// ---- Search highlight helpers ----------------------------------------------
+//Search highlight helpers 
 
-// Highlight a cell where the stored value (e.g., "12.50") differs from the
-// displayed value (e.g., "$12.50"). We test the raw value but show the formatted one.
+
 function highlightCell(rawValue, displayValue, regex) {
     if (!regex) return escapeHtml(displayValue);
     if (regex.global) regex.lastIndex = 0;
@@ -78,7 +77,7 @@ function buildFieldHtml(record, regex) {
     };
 }
 
-// ---- Navigation ------------------------------------------------------------
+// Navigation
 
 // Show one page section and hide all others.
 export function showSection(name) {
@@ -117,10 +116,9 @@ export function showSection(name) {
     state.setCurrentSection(name);
 }
 
-// ---- Records (table + mobile cards) ----------------------------------------
+//Records (table + mobile cards)
 
-// Render all records into both the desktop table and the mobile card list.
-// Returns the number of records shown (used to update the search result count).
+
 export function renderRecords(callbacks) {
     const onEdit   = callbacks.onEdit;
     const onDelete = callbacks.onDelete;
@@ -147,8 +145,7 @@ export function renderRecords(callbacks) {
     // 4. Render desktop TABLE rows
     const tableRows = filtered.map(function(record, index) {
         const fields = buildFieldHtml(record, highlightRegex);
-        const delay  = Math.min(index, 12) * 35; // stagger animation, cap at 12 rows
-
+        const delay  = Math.min(index, 12) * 35; 
         return [
             '<tr class="row-enter" style="animation-delay:' + delay + 'ms">',
             '  <td class="id-cell">' + escapeHtml(record.id) + '</td>',
@@ -383,8 +380,7 @@ function updateChart() {
     }
 }
 
-// ---- Search status ---------------------------------------------------------
-
+//Search status
 // Show how many results matched, or an error if the pattern is invalid.
 export function updateSearchStatus(pattern, count, caseInsensitive) {
     const statusEl = document.getElementById('search-status');
@@ -409,7 +405,7 @@ export function updateSearchStatus(pattern, count, caseInsensitive) {
     }
 }
 
-// ---- Categories ------------------------------------------------------------
+//Categories 
 
 // Render the category tag list in Settings.
 export function populateCategories(callbacks) {
@@ -440,20 +436,18 @@ export function populateCategories(callbacks) {
 // Populate the category <select> in the transaction form.
 export function populateFormCategories() {
     const select       = document.getElementById('form-category');
-    const currentValue = select.value; // remember selection before we clear it
+    const currentValue = select.value; 
 
     const options = state.settings.categories.map(function(cat) {
         return '<option value="' + escapeHtml(cat) + '">' + escapeHtml(cat) + '</option>';
     });
     select.innerHTML = '<option value="">Select a category</option>' + options.join('');
 
-    if (currentValue) select.value = currentValue; // restore previous selection
+    if (currentValue) select.value = currentValue; 
 }
 
-// ---- Toast notifications ---------------------------------------------------
+//  Toast notifications
 
-// Show a short message at the bottom of the screen for `duration` milliseconds.
-// type can be 'success', 'error', or 'info'.
 export function showToast(message, type, duration) {
     if (type     === undefined) type     = 'info';
     if (duration === undefined) duration = 3000;

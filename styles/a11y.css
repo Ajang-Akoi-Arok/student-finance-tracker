@@ -1,13 +1,9 @@
-/* ========================================
-   Accessibility Styles
-   Focus · High Contrast · Reduced Motion
-   ======================================== */
+/* Accessibility Styles
+   Focus · High Contrast · Reduced Motion */
 
-/* ========================================
-   Enhanced Focus Indicators
+/*Enhanced Focus Indicators
    (main.css uses box-shadow; this adds
-   outline fallback for forced-colors mode)
-   ======================================== */
+   outline fallback for forced-colors mode) */
 
 button:focus-visible,
 a:focus-visible,
@@ -18,9 +14,7 @@ textarea:focus-visible {
     outline-offset: 2px;
 }
 
-/* ========================================
-   High Contrast Mode (prefers-contrast)
-   ======================================== */
+/* High Contrast Mode (prefers-contrast) */
 
 @media (prefers-contrast: more) {
     :root {
@@ -42,9 +36,8 @@ textarea:focus-visible {
     }
 }
 
-/* ========================================
-   Forced Colors (Windows High Contrast)
-   ======================================== */
+/*
+   Forced Colors (Windows High Contrast) */
 
 @media (forced-colors: active) {
     .btn-primary, .btn-danger {
@@ -56,9 +49,7 @@ textarea:focus-visible {
     }
 }
 
-/* ========================================
-   Reduced Motion
-   ======================================== */
+/*Reduced Motion */
 
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
@@ -69,10 +60,8 @@ textarea:focus-visible {
     }
 }
 
-/* ========================================
-   Dark Mode
-   System preference (auto) AND manual toggle
-   ======================================== */
+/*Dark Mode
+   System preference (auto) AND manual toggle */
 
 /* Auto dark — system preference */
 @media (prefers-color-scheme: dark) {
@@ -158,12 +147,10 @@ html[data-theme="light"] .records-table thead tr { background: #f8fafc; }
 html[data-theme="light"] .records-table td       { border-color: #e2e8f0; }
 html[data-theme="light"] mark           { background-color: #fef08a; color: #713f12; }
 
-/* ========================================
-   Color Contrast Reference
+/* Color Contrast Reference
    body #1e293b on #f8fafc  = 13.7:1  ✓
    link #2563eb on white    =  4.8:1  ✓
-   btn white on #2563eb     =  7.4:1  ✓
-   ======================================== */
+   btn white on #2563eb     =  7.4:1  ✓ */
 
 /* Links */
 a:not(.btn):not(.nav-link):not(.skip-link):not(.footer-links a) {

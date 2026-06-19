@@ -1,14 +1,7 @@
 // search.js
-// Three utilities for the live search feature:
-//   1. compileRegex  — turn user text into a safe RegExp
-//   2. highlightMatches — wrap matches in <mark> tags for visual highlighting
-//   3. searchRecords — filter a list of records by the compiled regex
 
-// ---- compileRegex ----------------------------------------------------------
+//compileRegex
 
-// Try to compile the user's input into a RegExp object.
-// Returns the RegExp on success, or null if the pattern is invalid.
-// Supports the /pattern/flags syntax (e.g., /coffee/gi).
 export function compileRegex(input, caseInsensitive) {
     if (caseInsensitive === undefined) caseInsensitive = false;
     if (!input || !input.trim()) return null; // empty input → no search
@@ -35,7 +28,7 @@ export function compileRegex(input, caseInsensitive) {
     }
 }
 
-// ---- escapeHtml ------------------------------------------------------------
+//escapeHtml 
 
 // Escape special HTML characters so user input can't inject scripts (XSS).
 export function escapeHtml(text) {
@@ -53,21 +46,19 @@ export function escapeHtml(text) {
     });
 }
 
-// ---- highlightMatches ------------------------------------------------------
+//highlightMatches 
 
-// Return an HTML string where every regex match is wrapped in <mark>...</mark>.
-// Text that does NOT match is HTML-escaped for safety.
 export function highlightMatches(text, regex) {
     if (!text)  return '';
-    if (!regex) return escapeHtml(text); // no search active — just escape and return
+    if (!regex) return escapeHtml(text); 
 
     try {
         // Make sure the regex has the global flag so exec() finds all matches
         const flags   = regex.flags.includes('g') ? regex.flags : regex.flags + 'g';
         const globalRegex = new RegExp(regex.source, flags);
 
-        let result    = '';  // the HTML string we are building
-        let lastIndex = 0;   // where we left off in the original text
+        let result    = '';  
+        let lastIndex = 0;   
         let match;
 
         // Walk through every match in the text
@@ -89,14 +80,13 @@ export function highlightMatches(text, regex) {
         return result;
 
     } catch (error) {
-        return escapeHtml(text); // if anything goes wrong, just show plain text
+        return escapeHtml(text); 
     }
 }
 
-// ---- searchRecords ---------------------------------------------------------
+//searchRecords 
 
-// Return only the records where at least one of the given fields matches the regex.
-// If no regex is provided, all records are returned unchanged.
+
 export function searchRecords(records, regex, fields) {
     if (fields === undefined) fields = ['description', 'category', 'amount', 'date'];
     if (!regex) return records;
@@ -108,7 +98,7 @@ export function searchRecords(records, regex, fields) {
 
         for (const field of fields) {
             const rawValue = record[field];
-            if (rawValue == null) continue; // skip empty fields
+            if (rawValue == null) continue; 
 
             // Amount is stored as a number; convert it to "12.50" format for matching
             const textValue = (field === 'amount')
@@ -132,7 +122,7 @@ export function searchRecords(records, regex, fields) {
     return matching;
 }
 
-// ---- Example patterns (shown in docs / README) -----------------------------
+//Example patterns (shown in docs / README) 
 export const REGEX_EXAMPLES = {
     description: [
         { pattern: 'coffee|tea',          description: 'Find "coffee" or "tea"' },

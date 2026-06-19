@@ -12,9 +12,9 @@ import {
     populateCategories, populateFormCategories, showToast
 } from './ui.js';
 
-// ============================================================
+
 // INIT — called once when the page finishes loading
-// ============================================================
+
 
 function init() {
     initTheme();
@@ -27,10 +27,10 @@ function init() {
     setupInlineForm();
     setupAboutCards();
     loadSettingsUI();
-    state.subscribe(onStateChange);  // listen for any data changes
+    state.subscribe(onStateChange);  
     renderAll();
-    showSection('about');            // start on the About (landing) page
-    loadSeedIfEmpty();               // load sample data if the user has none yet
+    showSection('about');           
+    loadSeedIfEmpty();
 }
 
 // Re-render the whole UI whenever records or settings change.
@@ -56,9 +56,9 @@ function renderAll() {
     populateFormCategories();
 }
 
-// ============================================================
+
 // NAVIGATION
-// ============================================================
+
 
 function setupNav() {
     const nav       = document.getElementById('app-nav');
@@ -88,9 +88,8 @@ function setupNav() {
     });
 }
 
-// ============================================================
+
 // DASHBOARD BUTTONS
-// ============================================================
 
 function setupDashboard() {
     document.getElementById('btn-add-record').addEventListener('click', openAddForm);
@@ -100,9 +99,9 @@ function setupDashboard() {
     document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
 }
 
-// ============================================================
+
 // RECORDS — search and sort controls
-// ============================================================
+
 
 function setupRecords() {
     // Search input — debounced so we don't search on every single keystroke
@@ -151,9 +150,8 @@ function handleSearch() {
     updateSearchStatus(pattern, count, ci);
 }
 
-// ============================================================
+
 // MODALS — generic helpers and individual setup
-// ============================================================
 
 function openModal(modalId)  { document.getElementById(modalId).showModal(); }
 function closeModal(modalId) { document.getElementById(modalId).close(); }
@@ -229,9 +227,31 @@ function setupModals() {
     });
 }
 
-// ============================================================
+
 // SHARED FORM HELPERS — used by both the modal and inline forms
-// ============================================================
+
+
+// Validate, save, and call onSuccess — shared by the modal and inline forms.
+// inputPrefix / errorPrefix distinguish 'form-'/'error-' from 'inline-'/'inline-error-'.
+// onSuccess is called (and clears its own errors) when the record saves cleanly.
+function submitRecordForm(id, data, inputPrefix, errorPrefix, onSuccess) {
+    const validation = validateRecord(data);
+    if (!validation.isValid) {
+        const firstErrorInput = showFormErrors(validation.errors, inputPrefix, errorPrefix);
+        const statusEl = document.getElementById('status-region');
+        if (statusEl) statusEl.textContent = 'Please fix the errors before saving.';
+        if (firstErrorInput) firstErrorInput.focus();
+        return;
+    }
+    if (id) {
+        state.updateRecord(id, Object.assign({}, data, { amount: parseFloat(data.amount) }));
+        showToast('Transaction updated', 'success');
+    } else {
+        state.addRecord(Object.assign({}, data, { amount: parseFloat(data.amount) }));
+        showToast('Transaction added', 'success');
+    }
+    onSuccess();
+}
 
 // Mark each failing field with a red border and error message.
 // inputPrefix: the start of the input element's ID ('form-' or 'inline-')
@@ -255,9 +275,9 @@ function showFormErrors(errors, inputPrefix, errorPrefix) {
     return firstErrorInput;
 }
 
-// ============================================================
+
 // TRANSACTION FORM — open, close, submit
-// ============================================================
+
 
 function openAddForm() {
     document.getElementById('form-record-id').value         = '';
@@ -305,43 +325,18 @@ function closeFormModal() {
 }
 
 function handleFormSubmit(e) {
-    e.preventDefault(); // stop the browser from reloading the page
-
-    const id        = document.getElementById('form-record-id').value;
-    const rawAmount = document.getElementById('form-amount').value;
-
+    e.preventDefault();
+    const id   = document.getElementById('form-record-id').value;
     const data = {
         description: document.getElementById('form-description').value.trim(),
-        amount:      rawAmount,
+        amount:      document.getElementById('form-amount').value,
         category:    document.getElementById('form-category').value,
         date:        document.getElementById('form-date').value
     };
-
-    // Run all 5 validation rules
-    const validation = validateRecord(data);
-    if (!validation.isValid) {
-        const firstErrorInput = showFormErrors(validation.errors, 'form-', 'error-');
-        document.getElementById('status-region').textContent = 'Please fix the errors before saving.';
-        if (firstErrorInput) firstErrorInput.focus();
-        return; // stop here — don't save
-    }
-
-    clearAllErrors();
-
-    if (id) {
-        // Editing an existing record
-        state.updateRecord(id, Object.assign({}, data, { amount: parseFloat(rawAmount) }));
-        showToast('Transaction updated', 'success');
-    } else {
-        // Adding a new record
-        state.addRecord(Object.assign({}, data, { amount: parseFloat(rawAmount) }));
-        showToast('Transaction added', 'success');
-    }
-
-    closeFormModal();
+    submitRecordForm(id, data, 'form-', 'error-', closeFormModal);
 }
 
-// ---- Field validation helpers ----
+//Field validation helpers
 
 function validateFormField(field, showRequired) {
     if (showRequired === undefined) showRequired = false;
@@ -379,9 +374,9 @@ function clearAllErrors() {
     }
 }
 
-// ============================================================
+
 // DELETE
-// ============================================================
+
 
 // Open the delete confirmation dialog for a record.
 function requestDelete(id) {
@@ -407,18 +402,18 @@ function confirmClearAll() {
     showToast('All data cleared', 'success');
 }
 
-// ============================================================
+
 // KEYBOARD MAP MODAL
-// ============================================================
+
 
 function openKeyboardMap() {
     openModal('keyboard-modal');
     document.getElementById('btn-close-keyboard').focus();
 }
 
-// ============================================================
+
 // SETTINGS
-// ============================================================
+
 
 function setupSettings() {
     document.getElementById('btn-add-category')
@@ -553,9 +548,9 @@ function loadSettingsUI() {
     }
 }
 
-// ============================================================
+
 // IMPORT / EXPORT
-// ============================================================
+
 
 function exportData() {
     const jsonText = exportJSON(state.records);
@@ -631,9 +626,9 @@ function importData() {
     fileInput.click();
 }
 
-// ============================================================
+
 // THEME (light / dark mode)
-// ============================================================
+
 
 function initTheme() {
     const savedTheme = localStorage.getItem('ft-theme');
@@ -671,9 +666,9 @@ function updateThemeBtn(theme) {
     if (labelEl) labelEl.textContent = isDark ? 'Light' : 'Dark';
 }
 
-// ============================================================
+
 // KEYBOARD SHORTCUTS
-// ============================================================
+
 
 function setupKeyboardShortcuts() {
     document.addEventListener('keydown', function(e) {
@@ -689,9 +684,9 @@ function setupKeyboardShortcuts() {
     });
 }
 
-// ============================================================
+
 // SEED DATA — loads sample transactions on the very first visit
-// ============================================================
+
 
 async function loadSeedIfEmpty() {
     // Skip if the user already has records
@@ -748,9 +743,9 @@ function shiftDatesToRecent(records) {
     });
 }
 
-// ============================================================
+
 // INLINE FORM (the "Add Record" section, separate from the modal)
-// ============================================================
+
 
 function setupInlineForm() {
     const form     = document.getElementById('inline-transaction-form');
@@ -779,34 +774,14 @@ function setupInlineForm() {
 
     form.addEventListener('submit', function(e) {
         e.preventDefault();
-
-        const id        = document.getElementById('inline-record-id').value;
-        const rawAmount = document.getElementById('inline-amount').value;
-
+        const id   = document.getElementById('inline-record-id').value;
         const data = {
             description: document.getElementById('inline-description').value.trim(),
-            amount:      rawAmount,
+            amount:      document.getElementById('inline-amount').value,
             category:    document.getElementById('inline-category').value,
             date:        document.getElementById('inline-date').value
         };
-
-        const validation = validateRecord(data);
-        if (!validation.isValid) {
-            showFormErrors(validation.errors, 'inline-', 'inline-error-');
-            return;
-        }
-
-        clearInlineErrors();
-
-        if (id) {
-            state.updateRecord(id, Object.assign({}, data, { amount: parseFloat(rawAmount) }));
-            showToast('Transaction updated', 'success');
-        } else {
-            state.addRecord(Object.assign({}, data, { amount: parseFloat(rawAmount) }));
-            showToast('Transaction added', 'success');
-        }
-
-        resetInlineForm();
+        submitRecordForm(id, data, 'inline-', 'inline-error-', resetInlineForm);
     });
 
     resetBtn.addEventListener('click', resetInlineForm);
@@ -834,9 +809,9 @@ function clearInlineErrors() {
     }
 }
 
-// ============================================================
+
 // ABOUT CARDS — scroll-in animation using IntersectionObserver
-// ============================================================
+
 
 function setupAboutCards() {
     const cards = document.querySelectorAll('.about-card[data-aos]');
@@ -857,8 +832,6 @@ function setupAboutCards() {
     });
 }
 
-// ============================================================
-// START THE APP
-// ============================================================
+// START THE APP//
 
 document.addEventListener('DOMContentLoaded', init);
